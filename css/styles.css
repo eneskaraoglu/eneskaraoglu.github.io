@@ -628,6 +628,19 @@
 
     footer span { color: var(--accent-1); }
 
+    .visit-counter {
+      display: inline-flex;
+      align-items: center;
+      gap: .4rem;
+      margin-top: .75rem;
+      padding: .35rem .75rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+      font-family: 'Fira Code', monospace;
+      font-size: .78rem;
+    }
+
     /* ── Reveal animation ───────────────────────────────────────── */
     .reveal {
       opacity: 0;

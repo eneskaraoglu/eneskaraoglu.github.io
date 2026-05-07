@@ -51,6 +51,22 @@
   });
   applyLanguage(currentLang);
 
+  async function updateVisitCounter() {
+    const target = document.getElementById('visit-count');
+    if (!target) return;
+
+    try {
+      const response = await fetch('https://counterapi.com/api/eneskaraoglu.github.io/view/home?unique=true');
+      if (!response.ok) throw new Error('Counter request failed');
+
+      const data = await response.json();
+      target.textContent = Number(data.value).toLocaleString();
+    } catch {
+      target.closest('.visit-counter')?.remove();
+    }
+  }
+  updateVisitCounter();
+
   // Scroll reveal
   const observer = new IntersectionObserver(entries => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });

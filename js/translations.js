@@ -59,6 +59,7 @@
       'contact.subtitle': 'I am open to Senior Java Developer and Java Software Team Lead conversations.',
       'contact.sayHello': '&#9993;&nbsp; Say Hello',
       'footer.copy': 'Designed &amp; built by <span>Enes Karaoğlu</span> &mdash; 2026',
+      'footer.views': 'Page views',
       typedWords: ['ERP platforms.', 'Spring Boot APIs.', 'mobile app products.', 'enterprise integrations.', 'Java teams.']
     },
     tr: {
@@ -121,6 +122,7 @@
       'contact.subtitle': 'Senior Java Developer ve Java Software Team Lead fırsatları için görüşmeye açığım.',
       'contact.sayHello': '&#9993;&nbsp; Merhaba de',
       'footer.copy': '<span>Enes Karaoğlu</span> tarafından tasarlandı ve geliştirildi &mdash; 2026',
+      'footer.views': 'Sayfa görüntülenmesi',
       typedWords: ['ERP platformları.', 'Spring Boot API\'leri.', 'mobil uygulama ürünleri.', 'kurumsal entegrasyonlar.', 'Java ekipleri.']
     }
   };
