@@ -84,15 +84,26 @@ Ekip lideri olmama rağmen, hâlâ altyapıyı geliştiren ve yeni teknolojileri
 | Diller | Java, Python, JavaScript, SQL |
 | Backend | Spring Boot, J2EE, EJB, Hibernate, JPA, JSF, PrimeFaces, Servlet |
 | Frontend | JavaScript, DevExtreme, Thymeleaf, xHTML, CSS |
+| Mobil / Ürün Geliştirme | Flutter, Dart, Expo Go, Android uygulama geliştirme, ürün tasarımı, ikon/renk sistemi, uygulama metinleri, test, deployment |
+| Mobil / Yayınlama | Google Play, AdMob, app-ads.txt, gizlilik politikaları, ürün yönetimi, reklam/monetizasyon |
 | Servisler | REST (RS-API), SOAP (WS-API), WebSocket, MQTT |
 | Veritabanı | Oracle, MySQL, Sybase, Redis (NoSQL) |
 | Mesajlaşma / Stream | Apache Flink, Redis Pub/Sub, MQTT |
-| DevOps | Docker, Harbor, Git, SVN, Jira, Confluence |
+| DevOps | Docker, Harbor, Git, SVN, Jira, Confluence, GitHub Pages |
 | Protokol / Standart | AS2, EDI, JWT |
 
 ---
 
 ## Proje Detayları
+
+### Codeek Mobil Uygulama Portföyü
+`Flutter · Dart · Expo Go · Android · Google Play · AdMob · app-ads.txt · GitHub Pages · Privacy Policy · Product Management`
+
+Codeek Apps mobil uygulama portföyünün fikir aşamasından yayına alınmasına kadar uçtan uca geliştirilmesi. Math Sprint, Codeek Camera, Codeek Map ve QR and Barcode uygulamaları için ürün fikri, kullanıcı akışı, ikon tasarımı, renk paleti, uygulama metinleri, kodlama, test, deployment, Google Play yayın süreci, reklam/monetizasyon ve AdMob doğrulaması için app-ads.txt yapılandırmasının yönetilmesi.
+
+Bu çalışma kapsamında sadece yazılım geliştirme değil; sıfırdan ürün oluşturma, uygulama kimliği belirleme, mağaza yayınına hazırlama, gizlilik politikalarını oluşturma, geliştirici web sitesini GitHub Pages üzerinde yayınlama ve ürün yaşam döngüsünü yönetme süreçleri de yürütülmüştür.
+
+---
 
 ### Python Chatbot & ERP Entegrasyonu
 ERP sistemi ile entegre çalışan Python tabanlı chatbot uygulaması geliştirilmesi.
