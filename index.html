@@ -1,0 +1,903 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Enes Karaoglu — Developer</title>
+  <meta name="description" content="Personal portfolio of Enes Karaoglu, software developer." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & base ───────────────────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-1: #0f0c29;
+      --bg-2: #1a1a4e;
+      --bg-3: #24243e;
+      --accent-1: #a78bfa;   /* violet-400 */
+      --accent-2: #818cf8;   /* indigo-400 */
+      --accent-3: #38bdf8;   /* sky-400 */
+      --text-primary: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --glass-bg: rgba(255, 255, 255, 0.06);
+      --glass-border: rgba(255, 255, 255, 0.12);
+      --glass-hover: rgba(255, 255, 255, 0.10);
+      --radius: 16px;
+      --nav-h: 64px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg-1);
+      color: var(--text-primary);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    /* ── Animated gradient background ──────────────────────────── */
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%,  rgba(167,139,250,.25) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%,  rgba(56,189,248,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 60% at 60% 40%,  rgba(129,140,248,.15) 0%, transparent 60%),
+        linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
+      z-index: -1;
+      animation: gradientShift 18s ease-in-out infinite alternate;
+    }
+
+    @keyframes gradientShift {
+      0%   { opacity: 1;   filter: hue-rotate(0deg); }
+      100% { opacity: .85; filter: hue-rotate(25deg); }
+    }
+
+    /* ── Glass utility ──────────────────────────────────────────── */
+    .glass {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-radius: var(--radius);
+    }
+
+    /* ── Navigation ─────────────────────────────────────────────── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 3rem);
+      background: rgba(15, 12, 41, 0.55);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--glass-border);
+      transition: background .3s;
+    }
+
+    .nav-logo {
+      font-family: 'Fira Code', monospace;
+      font-size: 1.1rem;
+      color: var(--accent-1);
+      text-decoration: none;
+      font-weight: 500;
+    }
+
+    .nav-logo span { color: var(--accent-3); }
+
+    .nav-links {
+      display: flex;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-secondary);
+      font-size: .9rem;
+      font-weight: 500;
+      letter-spacing: .02em;
+      transition: color .2s;
+    }
+
+    .nav-links a:hover { color: var(--accent-1); }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 24px;
+      height: 2px;
+      background: var(--text-primary);
+      border-radius: 2px;
+      transition: all .3s;
+    }
+
+    /* ── Section base ───────────────────────────────────────────── */
+    section {
+      padding: clamp(5rem, 10vw, 7rem) clamp(1.5rem, 8vw, 6rem);
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-label {
+      font-family: 'Fira Code', monospace;
+      font-size: .85rem;
+      color: var(--accent-3);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      margin-bottom: .75rem;
+    }
+
+    .section-title {
+      font-size: clamp(2rem, 4vw, 2.75rem);
+      font-weight: 700;
+      margin-bottom: 1rem;
+      background: linear-gradient(135deg, var(--text-primary), var(--accent-1));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .section-divider {
+      width: 60px;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent-1), var(--accent-3));
+      border-radius: 3px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── Hero ───────────────────────────────────────────────────── */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding-top: calc(var(--nav-h) + 2rem);
+      max-width: 1200px;
+    }
+
+    .hero-tag {
+      font-family: 'Fira Code', monospace;
+      font-size: .95rem;
+      color: var(--accent-3);
+      margin-bottom: 1.25rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .2s;
+    }
+
+    .hero-name {
+      font-size: clamp(2.8rem, 7vw, 5.5rem);
+      font-weight: 700;
+      line-height: 1.08;
+      letter-spacing: -.02em;
+      margin-bottom: .75rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .4s;
+    }
+
+    .hero-name .highlight {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero-title {
+      font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+      color: var(--text-secondary);
+      font-weight: 400;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .6s;
+    }
+
+    .hero-title .typed-text {
+      color: var(--accent-1);
+      font-weight: 600;
+    }
+
+    .cursor {
+      display: inline-block;
+      width: 2px;
+      height: 1.1em;
+      background: var(--accent-1);
+      margin-left: 2px;
+      vertical-align: text-bottom;
+      animation: blink .75s step-end infinite;
+    }
+
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0} }
+
+    .hero-bio {
+      max-width: 560px;
+      color: var(--text-secondary);
+      font-size: 1.05rem;
+      line-height: 1.7;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards .8s;
+    }
+
+    .hero-cta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards 1s;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .75rem 1.75rem;
+      border-radius: 50px;
+      font-size: .95rem;
+      font-weight: 600;
+      text-decoration: none;
+      cursor: pointer;
+      border: none;
+      transition: all .25s;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      color: #fff;
+      box-shadow: 0 4px 24px rgba(167,139,250,.35);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(167,139,250,.5);
+    }
+
+    .btn-outline {
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-primary);
+      backdrop-filter: blur(8px);
+    }
+
+    .btn-outline:hover {
+      background: var(--glass-hover);
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+      transform: translateY(-2px);
+    }
+
+    .hero-scroll {
+      margin-top: 4rem;
+      display: flex;
+      align-items: center;
+      gap: .75rem;
+      color: var(--text-secondary);
+      font-size: .85rem;
+      opacity: 0;
+      animation: fadeUp .6s ease forwards 1.2s;
+    }
+
+    .scroll-line {
+      width: 40px;
+      height: 1px;
+      background: linear-gradient(90deg, var(--accent-1), transparent);
+    }
+
+    /* ── About ──────────────────────────────────────────────────── */
+    #about .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    .about-text p {
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 1rem;
+    }
+
+    .about-text p strong { color: var(--text-primary); }
+
+    .skills-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      gap: .75rem;
+    }
+
+    .skill-pill {
+      display: flex;
+      align-items: center;
+      gap: .5rem;
+      padding: .6rem 1rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      backdrop-filter: blur(8px);
+      border-radius: 50px;
+      font-size: .85rem;
+      color: var(--text-primary);
+      font-weight: 500;
+      transition: all .2s;
+    }
+
+    .skill-pill:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+      transform: translateY(-2px);
+    }
+
+    .skill-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      flex-shrink: 0;
+    }
+
+    /* ── Projects ───────────────────────────────────────────────── */
+    #projects .projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .project-card {
+      padding: 1.75rem;
+      transition: transform .25s, box-shadow .25s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .project-card::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, rgba(167,139,250,.08), rgba(56,189,248,.04));
+      opacity: 0;
+      transition: opacity .3s;
+      border-radius: var(--radius);
+    }
+
+    .project-card:hover { transform: translateY(-6px); box-shadow: 0 20px 60px rgba(0,0,0,.35); }
+    .project-card:hover::before { opacity: 1; }
+
+    .project-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 1rem;
+    }
+
+    .project-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+    }
+
+    .project-links { display: flex; gap: .5rem; }
+
+    .project-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 1rem;
+      transition: all .2s;
+    }
+
+    .project-link:hover { color: var(--accent-1); border-color: var(--accent-1); }
+
+    .project-name {
+      font-size: 1.15rem;
+      font-weight: 600;
+      margin-bottom: .5rem;
+    }
+
+    .project-desc {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.6;
+      margin-bottom: 1.25rem;
+    }
+
+    .project-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: .5rem;
+    }
+
+    .tag {
+      padding: .3rem .75rem;
+      border-radius: 50px;
+      font-size: .78rem;
+      font-weight: 500;
+      font-family: 'Fira Code', monospace;
+      background: rgba(167,139,250,.12);
+      color: var(--accent-1);
+      border: 1px solid rgba(167,139,250,.25);
+    }
+
+    /* ── Experience / Timeline ──────────────────────────────────── */
+    #experience .timeline {
+      position: relative;
+      padding-left: 2rem;
+    }
+
+    .timeline::before {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: linear-gradient(180deg, var(--accent-1), var(--accent-3), transparent);
+      border-radius: 2px;
+    }
+
+    .timeline-item {
+      position: relative;
+      margin-bottom: 2rem;
+    }
+
+    .timeline-item::before {
+      content: '';
+      position: absolute;
+      left: -2.5rem;
+      top: 1.25rem;
+      width: 12px;
+      height: 12px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
+      box-shadow: 0 0 12px rgba(167,139,250,.6);
+    }
+
+    .timeline-card {
+      padding: 1.5rem 1.75rem;
+      transition: transform .2s;
+    }
+
+    .timeline-card:hover { transform: translateX(4px); }
+
+    .timeline-period {
+      font-family: 'Fira Code', monospace;
+      font-size: .8rem;
+      color: var(--accent-3);
+      margin-bottom: .4rem;
+    }
+
+    .timeline-role {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: .15rem;
+    }
+
+    .timeline-company {
+      color: var(--accent-1);
+      font-weight: 500;
+      font-size: .95rem;
+      margin-bottom: .75rem;
+    }
+
+    .timeline-desc {
+      color: var(--text-secondary);
+      font-size: .9rem;
+      line-height: 1.65;
+    }
+
+    /* ── Contact ────────────────────────────────────────────────── */
+    #contact {
+      text-align: center;
+    }
+
+    #contact .section-divider { margin-left: auto; margin-right: auto; }
+
+    .contact-subtitle {
+      color: var(--text-secondary);
+      max-width: 480px;
+      margin: 0 auto 2.5rem;
+      line-height: 1.7;
+    }
+
+    .contact-card {
+      display: inline-flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.75rem;
+      padding: 3rem 4rem;
+      margin-bottom: 3rem;
+    }
+
+    .contact-email {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: var(--text-primary);
+      text-decoration: none;
+      transition: color .2s;
+    }
+
+    .contact-email:hover { color: var(--accent-1); }
+
+    .social-links {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .social-link {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      border-radius: 12px;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      color: var(--text-secondary);
+      text-decoration: none;
+      font-size: 1.2rem;
+      transition: all .25s;
+    }
+
+    .social-link:hover {
+      border-color: var(--accent-1);
+      color: var(--accent-1);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(167,139,250,.25);
+    }
+
+    /* ── Footer ─────────────────────────────────────────────────── */
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--text-secondary);
+      font-size: .82rem;
+      border-top: 1px solid var(--glass-border);
+    }
+
+    footer span { color: var(--accent-1); }
+
+    /* ── Reveal animation ───────────────────────────────────────── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Responsive ─────────────────────────────────────────────── */
+    @media (max-width: 768px) {
+      .nav-links { display: none; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: rgba(15,12,41,.95); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--glass-border); }
+      .nav-links.open { display: flex; }
+      .nav-toggle { display: flex; }
+      #about .about-grid { grid-template-columns: 1fr; }
+      #projects .projects-grid { grid-template-columns: 1fr; }
+      .contact-card { padding: 2rem 1.5rem; width: 100%; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Navigation ─────────────────────────────────────────────── -->
+<nav>
+  <a href="#hero" class="nav-logo">&lt;<span>enes</span> /&gt;</a>
+  <ul class="nav-links" id="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+    <span></span><span></span><span></span>
+  </button>
+</nav>
+
+<!-- ── Hero ───────────────────────────────────────────────────── -->
+<section id="hero">
+  <p class="hero-tag">// hello world</p>
+  <h1 class="hero-name">
+    Hi, I'm <span class="highlight">Enes Karaoglu</span>
+  </h1>
+  <p class="hero-title">
+    I build <span class="typed-text" id="typed"></span><span class="cursor"></span>
+  </p>
+  <p class="hero-bio">
+    A software developer passionate about creating elegant, performant web experiences.
+    I love turning complex problems into simple, beautiful, and intuitive solutions.
+  </p>
+  <div class="hero-cta">
+    <a href="#projects" class="btn btn-primary">
+      &#128196; View my work
+    </a>
+    <a href="#contact" class="btn btn-outline">
+      &#9993; Get in touch
+    </a>
+    <a href="https://github.com/eneskaraoglu" target="_blank" rel="noopener" class="btn btn-outline">
+      &#128279; GitHub
+    </a>
+  </div>
+  <div class="hero-scroll">
+    <span class="scroll-line"></span>
+    <span>scroll to explore</span>
+  </div>
+</section>
+
+<!-- ── About ──────────────────────────────────────────────────── -->
+<section id="about">
+  <p class="section-label reveal">01 &mdash; About Me</p>
+  <h2 class="section-title reveal">Who I am</h2>
+  <div class="section-divider reveal"></div>
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <p>
+        I'm <strong>Enes Karaoglu</strong>, a software developer based in Turkey.
+        I specialize in building high-quality web applications with clean code and great user experiences.
+      </p>
+      <p>
+        When I'm not coding, I enjoy exploring new technologies, contributing to open source,
+        and continuously learning from the developer community.
+      </p>
+      <p>
+        I believe great software is not just about functionality &mdash; it's about
+        <strong>performance</strong>, <strong>maintainability</strong>, and <strong>joy to use</strong>.
+      </p>
+      <br />
+      <a href="mailto:eneskaraoglu@bilisim.com.tr" class="btn btn-outline" style="display:inline-flex;">
+        &#128231; Email me
+      </a>
+    </div>
+    <div class="reveal">
+      <p class="section-label" style="margin-bottom:1.25rem;">Technologies &amp; Tools</p>
+      <div class="skills-grid">
+        <!-- Edit this list to match your actual skills -->
+        <div class="skill-pill"><span class="skill-dot"></span>JavaScript</div>
+        <div class="skill-pill"><span class="skill-dot"></span>TypeScript</div>
+        <div class="skill-pill"><span class="skill-dot"></span>React</div>
+        <div class="skill-pill"><span class="skill-dot"></span>Node.js</div>
+        <div class="skill-pill"><span class="skill-dot"></span>Python</div>
+        <div class="skill-pill"><span class="skill-dot"></span>SQL</div>
+        <div class="skill-pill"><span class="skill-dot"></span>Docker</div>
+        <div class="skill-pill"><span class="skill-dot"></span>Git</div>
+        <div class="skill-pill"><span class="skill-dot"></span>REST APIs</div>
+        <div class="skill-pill"><span class="skill-dot"></span>HTML / CSS</div>
+        <div class="skill-pill"><span class="skill-dot"></span>Linux</div>
+        <div class="skill-pill"><span class="skill-dot"></span>CI/CD</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── Projects ────────────────────────────────────────────────── -->
+<section id="projects">
+  <p class="section-label reveal">02 &mdash; Projects</p>
+  <h2 class="section-title reveal">Things I've built</h2>
+  <div class="section-divider reveal"></div>
+  <div class="projects-grid">
+
+    <!-- Project 1 — replace with your real projects -->
+    <div class="glass project-card reveal">
+      <div class="project-top">
+        <div class="project-icon">&#128640;</div>
+        <div class="project-links">
+          <a href="#" class="project-link" title="GitHub" target="_blank" rel="noopener">&#9729;</a>
+          <a href="#" class="project-link" title="Live demo" target="_blank" rel="noopener">&#8599;</a>
+        </div>
+      </div>
+      <h3 class="project-name">Project Alpha</h3>
+      <p class="project-desc">
+        A short description of what this project does, the problem it solves, and why it matters.
+        Keep it to two or three concise sentences.
+      </p>
+      <div class="project-tags">
+        <span class="tag">React</span>
+        <span class="tag">Node.js</span>
+        <span class="tag">PostgreSQL</span>
+      </div>
+    </div>
+
+    <!-- Project 2 -->
+    <div class="glass project-card reveal">
+      <div class="project-top">
+        <div class="project-icon">&#9889;</div>
+        <div class="project-links">
+          <a href="#" class="project-link" title="GitHub" target="_blank" rel="noopener">&#9729;</a>
+          <a href="#" class="project-link" title="Live demo" target="_blank" rel="noopener">&#8599;</a>
+        </div>
+      </div>
+      <h3 class="project-name">Project Beta</h3>
+      <p class="project-desc">
+        Another project description. What technology challenge did you tackle?
+        What was the outcome or impact?
+      </p>
+      <div class="project-tags">
+        <span class="tag">Python</span>
+        <span class="tag">FastAPI</span>
+        <span class="tag">Docker</span>
+      </div>
+    </div>
+
+    <!-- Project 3 -->
+    <div class="glass project-card reveal">
+      <div class="project-top">
+        <div class="project-icon">&#127775;</div>
+        <div class="project-links">
+          <a href="#" class="project-link" title="GitHub" target="_blank" rel="noopener">&#9729;</a>
+        </div>
+      </div>
+      <h3 class="project-name">Project Gamma</h3>
+      <p class="project-desc">
+        Describe the open-source tool, library, or side-project that shows off your skills.
+        Include metrics if you have them.
+      </p>
+      <div class="project-tags">
+        <span class="tag">TypeScript</span>
+        <span class="tag">Vite</span>
+        <span class="tag">TailwindCSS</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Experience ─────────────────────────────────────────────── -->
+<section id="experience">
+  <p class="section-label reveal">03 &mdash; Experience</p>
+  <h2 class="section-title reveal">Where I've worked</h2>
+  <div class="section-divider reveal"></div>
+  <div class="timeline">
+
+    <!-- Experience 1 — most recent first -->
+    <div class="timeline-item reveal">
+      <div class="glass timeline-card">
+        <p class="timeline-period">2023 &mdash; Present</p>
+        <h3 class="timeline-role">Senior Software Developer</h3>
+        <p class="timeline-company">Company Name</p>
+        <p class="timeline-desc">
+          Describe your main responsibilities, achievements, and the technologies you used.
+          Focus on impact: "Reduced API latency by 40%" beats "worked on API."
+        </p>
+      </div>
+    </div>
+
+    <!-- Experience 2 -->
+    <div class="timeline-item reveal">
+      <div class="glass timeline-card">
+        <p class="timeline-period">2021 &mdash; 2023</p>
+        <h3 class="timeline-role">Software Developer</h3>
+        <p class="timeline-company">Previous Company</p>
+        <p class="timeline-desc">
+          Key contributions, technologies, and the scale of the systems you worked on.
+          Quantify results where possible.
+        </p>
+      </div>
+    </div>
+
+    <!-- Experience 3 -->
+    <div class="timeline-item reveal">
+      <div class="glass timeline-card">
+        <p class="timeline-period">2019 &mdash; 2021</p>
+        <h3 class="timeline-role">Junior Developer</h3>
+        <p class="timeline-company">First Company</p>
+        <p class="timeline-desc">
+          Where you started, what you learned, and how you grew. Mention any notable projects
+          or skills you picked up here.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── Contact ────────────────────────────────────────────────── -->
+<section id="contact">
+  <p class="section-label reveal">04 &mdash; Contact</p>
+  <h2 class="section-title reveal">Get in touch</h2>
+  <div class="section-divider reveal"></div>
+  <p class="contact-subtitle reveal">
+    Whether you have a project in mind, a job opportunity, or just want to say hi &mdash;
+    my inbox is always open.
+  </p>
+  <div class="glass contact-card reveal">
+    <a href="mailto:eneskaraoglu@bilisim.com.tr" class="contact-email">
+      eneskaraoglu@bilisim.com.tr
+    </a>
+    <a href="mailto:eneskaraoglu@bilisim.com.tr" class="btn btn-primary">
+      &#9993;&nbsp; Say Hello
+    </a>
+    <div class="social-links">
+      <a href="https://github.com/eneskaraoglu" target="_blank" rel="noopener" class="social-link" title="GitHub">
+        <!-- GitHub SVG icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M12 2C6.477 2 2 6.477 2 12c0 4.418 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.866-.013-1.7-2.782.603-3.369-1.342-3.369-1.342-.454-1.155-1.11-1.462-1.11-1.462-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.529 2.341 1.087 2.91.831.092-.646.35-1.086.636-1.336-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.578 9.578 0 0 1 12 6.836a9.59 9.59 0 0 1 2.504.337c1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.202 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.163 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
+        </svg>
+      </a>
+      <a href="https://linkedin.com/in/eneskaraoglu" target="_blank" rel="noopener" class="social-link" title="LinkedIn">
+        <!-- LinkedIn SVG icon -->
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M19 3a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h14m-.5 15.5v-5.3a3.26 3.26 0 0 0-3.26-3.26c-.85 0-1.84.52-2.32 1.3v-1.11h-2.79v8.37h2.79v-4.93c0-.77.62-1.4 1.39-1.4a1.4 1.4 0 0 1 1.4 1.4v4.93h2.79M6.88 8.56a1.68 1.68 0 0 0 1.68-1.68c0-.93-.75-1.69-1.68-1.69a1.69 1.69 0 0 0-1.69 1.69c0 .93.76 1.68 1.69 1.68m1.39 9.94v-8.37H5.5v8.37h2.77z"/>
+        </svg>
+      </a>
+      <a href="https://twitter.com/eneskaraoglu" target="_blank" rel="noopener" class="social-link" title="Twitter / X">
+        <!-- X (Twitter) icon -->
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+        </svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── Footer ─────────────────────────────────────────────────── -->
+<footer>
+  <p>Designed &amp; built by <span>Enes Karaoglu</span> &mdash; 2025</p>
+</footer>
+
+<!-- ── Scripts ─────────────────────────────────────────────────── -->
+<script>
+  // Typed text effect
+  const words = ['web applications.', 'clean APIs.', 'fast UIs.', 'great software.'];
+  let wi = 0, ci = 0, deleting = false;
+  const el = document.getElementById('typed');
+
+  function type() {
+    const word = words[wi];
+    if (!deleting) {
+      el.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; return setTimeout(type, 1800); }
+    } else {
+      el.textContent = word.slice(0, --ci);
+      if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
+    }
+    setTimeout(type, deleting ? 55 : 90);
+  }
+  setTimeout(type, 1400);
+
+  // Scroll reveal
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); observer.unobserve(e.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+  // Mobile nav toggle
+  const toggle = document.getElementById('nav-toggle');
+  const links  = document.getElementById('nav-links');
+  toggle.addEventListener('click', () => links.classList.toggle('open'));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+</script>
+
+</body>
+</html>
