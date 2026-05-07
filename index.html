@@ -13,12 +13,12 @@
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      --bg-1: #0f0c29;
-      --bg-2: #1a1a4e;
-      --bg-3: #24243e;
-      --accent-1: #a78bfa;   /* violet-400 */
-      --accent-2: #818cf8;   /* indigo-400 */
-      --accent-3: #38bdf8;   /* sky-400 */
+      --bg-1: #0a0a14;
+      --bg-2: #14080a;
+      --bg-3: #0f0a0a;
+      --accent-1: #ff4d2e;   /* red-orange */
+      --accent-2: #3b82f6;   /* blue */
+      --accent-3: #ff8c42;   /* amber */
       --text-primary: #f1f5f9;
       --text-secondary: #94a3b8;
       --glass-bg: rgba(255, 255, 255, 0.06);
@@ -44,9 +44,9 @@
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 20% 10%,  rgba(167,139,250,.25) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 50% at 80% 80%,  rgba(56,189,248,.18) 0%, transparent 55%),
-        radial-gradient(ellipse 70% 60% at 60% 40%,  rgba(129,140,248,.15) 0%, transparent 60%),
+        radial-gradient(ellipse 80% 60% at 20% 10%,  rgba(255,77,46,.22)  0%, transparent 60%),
+        radial-gradient(ellipse 60% 50% at 80% 80%,  rgba(59,130,246,.18) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 60% at 60% 40%,  rgba(255,140,66,.12) 0%, transparent 60%),
         linear-gradient(135deg, var(--bg-1), var(--bg-2), var(--bg-3));
       z-index: -1;
       animation: gradientShift 18s ease-in-out infinite alternate;
@@ -76,7 +76,7 @@
       align-items: center;
       justify-content: space-between;
       padding: 0 clamp(1.5rem, 5vw, 3rem);
-      background: rgba(15, 12, 41, 0.55);
+      background: rgba(10, 10, 20, 0.55);
       backdrop-filter: blur(20px);
       -webkit-backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--glass-border);
@@ -260,12 +260,12 @@
     .btn-primary {
       background: linear-gradient(135deg, var(--accent-1), var(--accent-2));
       color: #fff;
-      box-shadow: 0 4px 24px rgba(167,139,250,.35);
+      box-shadow: 0 4px 24px rgba(255,77,46,.35);
     }
 
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(167,139,250,.5);
+      box-shadow: 0 8px 32px rgba(255,77,46,.5);
     }
 
     .btn-outline {
@@ -368,7 +368,7 @@
       content: '';
       position: absolute;
       inset: 0;
-      background: linear-gradient(135deg, rgba(167,139,250,.08), rgba(56,189,248,.04));
+      background: linear-gradient(135deg, rgba(255,77,46,.08), rgba(59,130,246,.04));
       opacity: 0;
       transition: opacity .3s;
       border-radius: var(--radius);
@@ -439,9 +439,9 @@
       font-size: .78rem;
       font-weight: 500;
       font-family: 'Fira Code', monospace;
-      background: rgba(167,139,250,.12);
+      background: rgba(255,77,46,.12);
       color: var(--accent-1);
-      border: 1px solid rgba(167,139,250,.25);
+      border: 1px solid rgba(255,77,46,.25);
     }
 
     /* ── Experience / Timeline ──────────────────────────────────── */
@@ -475,7 +475,7 @@
       height: 12px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--accent-1), var(--accent-3));
-      box-shadow: 0 0 12px rgba(167,139,250,.6);
+      box-shadow: 0 0 12px rgba(255,77,46,.6);
     }
 
     .timeline-card {
@@ -568,7 +568,7 @@
       border-color: var(--accent-1);
       color: var(--accent-1);
       transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(167,139,250,.25);
+      box-shadow: 0 8px 24px rgba(255,77,46,.25);
     }
 
     /* ── Footer ─────────────────────────────────────────────────── */
@@ -601,7 +601,7 @@
 
     /* ── Responsive ─────────────────────────────────────────────── */
     @media (max-width: 768px) {
-      .nav-links { display: none; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: rgba(15,12,41,.95); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--glass-border); }
+      .nav-links { display: none; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: rgba(10,10,20,.95); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--glass-border); }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
       #about .about-grid { grid-template-columns: 1fr; }
