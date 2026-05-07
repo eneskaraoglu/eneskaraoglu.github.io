@@ -117,6 +117,40 @@
 
     .nav-links a:hover { color: var(--accent-1); }
 
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .language-switch {
+      display: inline-flex;
+      gap: .25rem;
+      padding: .25rem;
+      background: var(--glass-bg);
+      border: 1px solid var(--glass-border);
+      border-radius: 999px;
+    }
+
+    .lang-btn {
+      border: none;
+      background: transparent;
+      color: var(--text-secondary);
+      border-radius: 999px;
+      cursor: pointer;
+      font-family: 'Fira Code', monospace;
+      font-size: .78rem;
+      font-weight: 600;
+      padding: .35rem .55rem;
+      transition: background .2s, color .2s;
+    }
+
+    .lang-btn:hover,
+    .lang-btn.active {
+      background: var(--accent-1);
+      color: #fff8df;
+    }
+
     .nav-toggle {
       display: none;
       flex-direction: column;
@@ -627,6 +661,7 @@
       .nav-links { display: none; flex-direction: column; position: absolute; top: var(--nav-h); left: 0; right: 0; background: var(--nav-bg-solid); backdrop-filter: blur(20px); padding: 1.5rem 2rem; gap: 1.25rem; border-bottom: 1px solid var(--glass-border); }
       .nav-links.open { display: flex; }
       .nav-toggle { display: flex; }
+      .nav-actions { gap: .75rem; }
       #about .about-grid { grid-template-columns: 1fr; }
       #projects .projects-grid { grid-template-columns: 1fr; }
       .contact-card { padding: 2rem 1.5rem; width: 100%; }
@@ -639,34 +674,40 @@
 <nav>
   <a href="#hero" class="nav-logo">&lt;<span>enes</span> /&gt;</a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#about">About</a></li>
-    <li><a href="#projects">Projects</a></li>
-    <li><a href="#experience">Experience</a></li>
-    <li><a href="#contact">Contact</a></li>
+    <li><a href="#about" data-i18n="nav.about">About</a></li>
+    <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
+    <li><a href="#experience" data-i18n="nav.experience">Experience</a></li>
+    <li><a href="#contact" data-i18n="nav.contact">Contact</a></li>
   </ul>
-  <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
-    <span></span><span></span><span></span>
-  </button>
+  <div class="nav-actions">
+    <div class="language-switch" aria-label="Language selection">
+      <button type="button" class="lang-btn" data-lang="en">EN</button>
+      <button type="button" class="lang-btn" data-lang="tr">TR</button>
+    </div>
+    <button class="nav-toggle" id="nav-toggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
 <!-- ── Hero ───────────────────────────────────────────────────── -->
 <section id="hero">
-  <p class="hero-tag">// senior java developer</p>
-  <h1 class="hero-name">
+  <p class="hero-tag" data-i18n="hero.tag">// senior java developer</p>
+  <h1 class="hero-name" data-i18n-html="hero.name">
     Hi, I'm <span class="highlight">Enes Karaoğlu</span>
   </h1>
-  <p class="hero-title">
+  <p class="hero-title" data-i18n-html="hero.title">
     I build <span class="typed-text" id="typed"></span><span class="cursor"></span>
   </p>
-  <p class="hero-bio">
+  <p class="hero-bio" data-i18n="hero.bio">
     Software Team Lead and hands-on Senior Java Developer based in Ankara. I design and build
     ERP platforms, Spring Boot services, integration layers, and production software used by teams.
   </p>
   <div class="hero-cta">
-    <a href="#projects" class="btn btn-primary">
+    <a href="#projects" class="btn btn-primary" data-i18n-html="hero.viewProjects">
       &#128196; View projects
     </a>
-    <a href="#contact" class="btn btn-outline">
+    <a href="#contact" class="btn btn-outline" data-i18n-html="hero.contactMe">
       &#9993; Contact me
     </a>
     <a href="https://github.com/eneskaraoglu" target="_blank" rel="noopener" class="btn btn-outline">
@@ -675,41 +716,41 @@
   </div>
   <div class="hero-scroll">
     <span class="scroll-line"></span>
-    <span>scroll to explore</span>
+    <span data-i18n="hero.scroll">scroll to explore</span>
   </div>
 </section>
 
 <!-- ── About ──────────────────────────────────────────────────── -->
 <section id="about">
-  <p class="section-label reveal">01 &mdash; About Me</p>
-  <h2 class="section-title reveal">Who I am</h2>
+  <p class="section-label reveal" data-i18n="about.label">01 &mdash; About Me</p>
+  <h2 class="section-title reveal" data-i18n="about.title">Who I am</h2>
   <div class="section-divider reveal"></div>
   <div class="about-grid">
     <div class="about-text reveal">
-      <p>
+      <p data-i18n-html="about.p1">
         I'm <strong>Enes Karaoğlu</strong>, a Software Team Lead at Bilişim AŞ in Ankara.
         Although I lead development teams, I still write much of the infrastructure and new-technology
         code myself.
       </p>
-      <p>
+      <p data-i18n="about.p2">
         My work focuses on Java, Spring Boot, J2EE, ERP systems, REST and SOAP services,
         frontend integrations, deployment modernization, and third-party enterprise integrations.
       </p>
-      <p>
+      <p data-i18n-html="about.p3">
         I am comfortable working as a <strong>Senior Java Developer</strong> or
         <strong>Java Software Team Lead</strong>, combining architectural ownership with practical
         delivery and team coordination.
       </p>
-      <p>
+      <p data-i18n-html="about.education">
         Education: <strong>Industrial Engineering</strong>, Sakarya University, 2006.
       </p>
       <br />
-      <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-outline" style="display:inline-flex;">
+      <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-outline" style="display:inline-flex;" data-i18n-html="about.email">
         &#128231; Email me
       </a>
     </div>
     <div class="reveal">
-      <p class="section-label" style="margin-bottom:1.25rem;">Technologies &amp; Tools</p>
+      <p class="section-label" style="margin-bottom:1.25rem;" data-i18n="about.techLabel">Technologies &amp; Tools</p>
       <div class="skills-grid">
         <div class="skill-pill"><span class="skill-dot"></span>Java</div>
         <div class="skill-pill"><span class="skill-dot"></span>Spring Boot</div>
@@ -754,8 +795,8 @@
 
 <!-- ── Projects ────────────────────────────────────────────────── -->
 <section id="projects">
-  <p class="section-label reveal">02 &mdash; Projects</p>
-  <h2 class="section-title reveal">Selected work</h2>
+  <p class="section-label reveal" data-i18n="projects.label">02 &mdash; Projects</p>
+  <h2 class="section-title reveal" data-i18n="projects.title">Selected work</h2>
   <div class="section-divider reveal"></div>
   <div class="projects-grid">
 
@@ -763,8 +804,8 @@
       <div class="project-top">
         <div class="project-icon">&#128241;</div>
       </div>
-      <h3 class="project-name">Codeek Mobile App Portfolio</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.codeek.title">Codeek Mobile App Portfolio</h3>
+      <p class="project-desc" data-i18n="project.codeek.desc">
         Built a mobile app product portfolio from zero to release, covering product idea, user flow,
         icons, color system, app copy, coding, testing, deployment, Google Play publishing, AdMob,
         privacy policies, and the developer website.
@@ -782,8 +823,8 @@
       <div class="project-top">
         <div class="project-icon">&#128736;</div>
       </div>
-      <h3 class="project-name">Spring Boot ERP REST Services</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.erpRest.title">Spring Boot ERP REST Services</h3>
+      <p class="project-desc" data-i18n="project.erpRest.desc">
         Designed and developed Spring Boot REST services connected to the ERP platform, exposing
         enterprise data through structured APIs.
       </p>
@@ -799,8 +840,8 @@
       <div class="project-top">
         <div class="project-icon">&#8644;</div>
       </div>
-      <h3 class="project-name">EJB to REST Service Migration</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.ejbRest.title">EJB to REST Service Migration</h3>
+      <p class="project-desc" data-i18n="project.ejbRest.desc">
         Converted existing J2EE ERP EJB services into REST APIs and built DevExtreme-based
         frontend integrations for new service flows.
       </p>
@@ -816,8 +857,8 @@
       <div class="project-top">
         <div class="project-icon">&#128246;</div>
       </div>
-      <h3 class="project-name">IoT Machine Integration</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.iot.title">IoT Machine Integration</h3>
+      <p class="project-desc" data-i18n="project.iot.desc">
         Processed machine data from MQTT streams with Java, Redis, REST, WebSocket, and Apache Flink
         to publish ERP-ready production data.
       </p>
@@ -833,8 +874,8 @@
       <div class="project-top">
         <div class="project-icon">&#128230;</div>
       </div>
-      <h3 class="project-name">Application Dockerization</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.docker.title">Application Dockerization</h3>
+      <p class="project-desc" data-i18n="project.docker.desc">
         Dockerized Spring Boot, Angular, JavaScript, J2EE, and Python applications, with image
         management and deployment workflows through Harbor registry.
       </p>
@@ -849,8 +890,8 @@
       <div class="project-top">
         <div class="project-icon">&#128202;</div>
       </div>
-      <h3 class="project-name">Jira Reporting Application</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.jira.title">Jira Reporting Application</h3>
+      <p class="project-desc" data-i18n="project.jira.desc">
         Built a Spring Boot and Thymeleaf reporting application connected to Jira data, using REST
         services and Google Charts for software team analytics.
       </p>
@@ -866,8 +907,8 @@
       <div class="project-top">
         <div class="project-icon">&#128257;</div>
       </div>
-      <h3 class="project-name">Redis and ERP Integration</h3>
-      <p class="project-desc">
+      <h3 class="project-name" data-i18n="project.redis.title">Redis and ERP Integration</h3>
+      <p class="project-desc" data-i18n="project.redis.desc">
         Integrated Redis JSON data with ERP entities such as work orders, machines, and product
         structures, including Oracle trigger to Redis workflows.
       </p>
@@ -884,22 +925,22 @@
 
 <!-- ── Experience ─────────────────────────────────────────────── -->
 <section id="experience">
-  <p class="section-label reveal">03 &mdash; Experience</p>
-  <h2 class="section-title reveal">Where I've worked</h2>
+  <p class="section-label reveal" data-i18n="experience.label">03 &mdash; Experience</p>
+  <h2 class="section-title reveal" data-i18n="experience.title">Where I've worked</h2>
   <div class="section-divider reveal"></div>
   <div class="timeline">
 
     <div class="timeline-item reveal">
       <div class="glass timeline-card">
-        <p class="timeline-period">04/2018 &mdash; Present</p>
-        <h3 class="timeline-role">Software Team Lead</h3>
+        <p class="timeline-period" data-i18n="experience.current.period">04/2018 &mdash; Present</p>
+        <h3 class="timeline-role" data-i18n="experience.current.role">Software Team Lead</h3>
         <p class="timeline-company">Bilişim AŞ, Ankara</p>
         <ul class="timeline-list">
-          <li>Leads architecture, development, rollout, and adoption of React frontend and Spring Boot backend applications around ERP products.</li>
-          <li>Designed and implemented Java/Spring REST API architecture with Swagger/OpenAPI for the existing core ERP product.</li>
-          <li>Modernized core systems through Java upgrades, IDE updates, SOAP/REST service updates, Dockerization, and deployment environment improvements.</li>
-          <li>Leads Spring Boot, DevExtreme, J2EE, Swing, JSF, and PrimeFaces development teams while continuing hands-on infrastructure coding.</li>
-          <li>Manages Agile Sprint/Kanban workflows in Jira, documentation in Confluence, and work from engineers and consultants as Scrum Master.</li>
+          <li data-i18n="experience.current.li1">Leads architecture, development, rollout, and adoption of React frontend and Spring Boot backend applications around ERP products.</li>
+          <li data-i18n="experience.current.li2">Designed and implemented Java/Spring REST API architecture with Swagger/OpenAPI for the existing core ERP product.</li>
+          <li data-i18n="experience.current.li3">Modernized core systems through Java upgrades, IDE updates, SOAP/REST service updates, Dockerization, and deployment environment improvements.</li>
+          <li data-i18n="experience.current.li4">Leads Spring Boot, DevExtreme, J2EE, Swing, JSF, and PrimeFaces development teams while continuing hands-on infrastructure coding.</li>
+          <li data-i18n="experience.current.li5">Manages Agile Sprint/Kanban workflows in Jira, documentation in Confluence, and work from engineers and consultants as Scrum Master.</li>
         </ul>
       </div>
     </div>
@@ -907,12 +948,12 @@
     <div class="timeline-item reveal">
       <div class="glass timeline-card">
         <p class="timeline-period">04/2013 &mdash; 04/2018</p>
-        <h3 class="timeline-role">Senior Software Developer</h3>
+        <h3 class="timeline-role" data-i18n="experience.senior.role">Senior Software Developer</h3>
         <p class="timeline-company">Bilişim AŞ, Ankara</p>
         <ul class="timeline-list">
-          <li>Developed analyzed business modules with Java Swing, J2EE, JSF, and PrimeFaces.</li>
-          <li>Implemented ERP integrations across different databases and third-party SOAP services.</li>
-          <li>Worked on Oracle database setup, optimization, and enterprise application support.</li>
+          <li data-i18n="experience.senior.li1">Developed analyzed business modules with Java Swing, J2EE, JSF, and PrimeFaces.</li>
+          <li data-i18n="experience.senior.li2">Implemented ERP integrations across different databases and third-party SOAP services.</li>
+          <li data-i18n="experience.senior.li3">Worked on Oracle database setup, optimization, and enterprise application support.</li>
         </ul>
       </div>
     </div>
@@ -920,11 +961,11 @@
     <div class="timeline-item reveal">
       <div class="glass timeline-card">
         <p class="timeline-period">04/2008 &mdash; 04/2013</p>
-        <h3 class="timeline-role">Software Developer</h3>
+        <h3 class="timeline-role" data-i18n="experience.developer.role">Software Developer</h3>
         <p class="timeline-company">Bilişim Ltd, Ankara</p>
         <ul class="timeline-list">
-          <li>Developed Java Swing GUI screens and J2EE application features.</li>
-          <li>Created Oracle tables and views for analyzed ERP screens and workflows.</li>
+          <li data-i18n="experience.developer.li1">Developed Java Swing GUI screens and J2EE application features.</li>
+          <li data-i18n="experience.developer.li2">Created Oracle tables and views for analyzed ERP screens and workflows.</li>
         </ul>
       </div>
     </div>
@@ -934,10 +975,10 @@
 
 <!-- ── Contact ────────────────────────────────────────────────── -->
 <section id="contact">
-  <p class="section-label reveal">04 &mdash; Contact</p>
-  <h2 class="section-title reveal">Get in touch</h2>
+  <p class="section-label reveal" data-i18n="contact.label">04 &mdash; Contact</p>
+  <h2 class="section-title reveal" data-i18n="contact.title">Get in touch</h2>
   <div class="section-divider reveal"></div>
-  <p class="contact-subtitle reveal">
+  <p class="contact-subtitle reveal" data-i18n="contact.subtitle">
     I am open to Senior Java Developer and Java Software Team Lead conversations.
   </p>
   <div class="glass contact-card reveal">
@@ -948,7 +989,7 @@
       <p>Ankara / TURKEY</p>
       <p>0 535 453 99 40</p>
     </div>
-    <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-primary">
+    <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-primary" data-i18n-html="contact.sayHello">
       &#9993;&nbsp; Say Hello
     </a>
     <div class="social-links">
@@ -978,28 +1019,188 @@
 
 <!-- ── Footer ─────────────────────────────────────────────────── -->
 <footer>
-  <p>Designed &amp; built by <span>Enes Karaoğlu</span> &mdash; 2026</p>
+  <p data-i18n-html="footer.copy">Designed &amp; built by <span>Enes Karaoğlu</span> &mdash; 2026</p>
 </footer>
 
 <!-- ── Scripts ─────────────────────────────────────────────────── -->
 <script>
-  // Typed text effect
-  const words = ['ERP platforms.', 'Spring Boot APIs.', 'mobile app products.', 'enterprise integrations.', 'Java teams.'];
-  let wi = 0, ci = 0, deleting = false;
-  const el = document.getElementById('typed');
+  const translations = {
+    en: {
+      metaTitle: 'Enes Karaoğlu — Senior Java Developer',
+      metaDescription: 'Personal portfolio of Enes Karaoğlu, Senior Java Developer and Software Team Lead in Ankara.',
+      'nav.about': 'About',
+      'nav.projects': 'Projects',
+      'nav.experience': 'Experience',
+      'nav.contact': 'Contact',
+      'hero.tag': '// senior java developer',
+      'hero.name': 'Hi, I\'m <span class="highlight">Enes Karaoğlu</span>',
+      'hero.title': 'I build <span class="typed-text" id="typed"></span><span class="cursor"></span>',
+      'hero.bio': 'Software Team Lead and hands-on Senior Java Developer based in Ankara. I design and build ERP platforms, Spring Boot services, integration layers, and production software used by teams.',
+      'hero.viewProjects': '&#128196; View projects',
+      'hero.contactMe': '&#9993; Contact me',
+      'hero.scroll': 'scroll to explore',
+      'about.label': '01 — About Me',
+      'about.title': 'Who I am',
+      'about.p1': 'I\'m <strong>Enes Karaoğlu</strong>, a Software Team Lead at Bilişim AŞ in Ankara. Although I lead development teams, I still write much of the infrastructure and new-technology code myself.',
+      'about.p2': 'My work focuses on Java, Spring Boot, J2EE, ERP systems, REST and SOAP services, frontend integrations, deployment modernization, and third-party enterprise integrations.',
+      'about.p3': 'I am comfortable working as a <strong>Senior Java Developer</strong> or <strong>Java Software Team Lead</strong>, combining architectural ownership with practical delivery and team coordination.',
+      'about.education': 'Education: <strong>Industrial Engineering</strong>, Sakarya University, 2006.',
+      'about.email': '&#128231; Email me',
+      'about.techLabel': 'Technologies & Tools',
+      'projects.label': '02 — Projects',
+      'projects.title': 'Selected work',
+      'project.codeek.title': 'Codeek Mobile App Portfolio',
+      'project.codeek.desc': 'Built a mobile app product portfolio from zero to release, covering product idea, user flow, icons, color system, app copy, coding, testing, deployment, Google Play publishing, AdMob, privacy policies, and the developer website.',
+      'project.erpRest.title': 'Spring Boot ERP REST Services',
+      'project.erpRest.desc': 'Designed and developed Spring Boot REST services connected to the ERP platform, exposing enterprise data through structured APIs.',
+      'project.ejbRest.title': 'EJB to REST Service Migration',
+      'project.ejbRest.desc': 'Converted existing J2EE ERP EJB services into REST APIs and built DevExtreme-based frontend integrations for new service flows.',
+      'project.iot.title': 'IoT Machine Integration',
+      'project.iot.desc': 'Processed machine data from MQTT streams with Java, Redis, REST, WebSocket, and Apache Flink to publish ERP-ready production data.',
+      'project.docker.title': 'Application Dockerization',
+      'project.docker.desc': 'Dockerized Spring Boot, Angular, JavaScript, J2EE, and Python applications, with image management and deployment workflows through Harbor registry.',
+      'project.jira.title': 'Jira Reporting Application',
+      'project.jira.desc': 'Built a Spring Boot and Thymeleaf reporting application connected to Jira data, using REST services and Google Charts for software team analytics.',
+      'project.redis.title': 'Redis and ERP Integration',
+      'project.redis.desc': 'Integrated Redis JSON data with ERP entities such as work orders, machines, and product structures, including Oracle trigger to Redis workflows.',
+      'experience.label': '03 — Experience',
+      'experience.title': 'Where I\'ve worked',
+      'experience.current.period': '04/2018 — Present',
+      'experience.current.role': 'Software Team Lead',
+      'experience.current.li1': 'Leads architecture, development, rollout, and adoption of React frontend and Spring Boot backend applications around ERP products.',
+      'experience.current.li2': 'Designed and implemented Java/Spring REST API architecture with Swagger/OpenAPI for the existing core ERP product.',
+      'experience.current.li3': 'Modernized core systems through Java upgrades, IDE updates, SOAP/REST service updates, Dockerization, and deployment environment improvements.',
+      'experience.current.li4': 'Leads Spring Boot, DevExtreme, J2EE, Swing, JSF, and PrimeFaces development teams while continuing hands-on infrastructure coding.',
+      'experience.current.li5': 'Manages Agile Sprint/Kanban workflows in Jira, documentation in Confluence, and work from engineers and consultants as Scrum Master.',
+      'experience.senior.role': 'Senior Software Developer',
+      'experience.senior.li1': 'Developed analyzed business modules with Java Swing, J2EE, JSF, and PrimeFaces.',
+      'experience.senior.li2': 'Implemented ERP integrations across different databases and third-party SOAP services.',
+      'experience.senior.li3': 'Worked on Oracle database setup, optimization, and enterprise application support.',
+      'experience.developer.role': 'Software Developer',
+      'experience.developer.li1': 'Developed Java Swing GUI screens and J2EE application features.',
+      'experience.developer.li2': 'Created Oracle tables and views for analyzed ERP screens and workflows.',
+      'contact.label': '04 — Contact',
+      'contact.title': 'Get in touch',
+      'contact.subtitle': 'I am open to Senior Java Developer and Java Software Team Lead conversations.',
+      'contact.sayHello': '&#9993;&nbsp; Say Hello',
+      'footer.copy': 'Designed &amp; built by <span>Enes Karaoğlu</span> &mdash; 2026',
+      typedWords: ['ERP platforms.', 'Spring Boot APIs.', 'mobile app products.', 'enterprise integrations.', 'Java teams.']
+    },
+    tr: {
+      metaTitle: 'Enes Karaoğlu — Kıdemli Java Geliştirici',
+      metaDescription: 'Enes Karaoğlu kişisel portfolyosu; Ankara merkezli Kıdemli Java Geliştirici ve Yazılım Ekip Lideri.',
+      'nav.about': 'Hakkımda',
+      'nav.projects': 'Projeler',
+      'nav.experience': 'Deneyim',
+      'nav.contact': 'İletişim',
+      'hero.tag': '// kıdemli java geliştirici',
+      'hero.name': 'Merhaba, ben <span class="highlight">Enes Karaoğlu</span>',
+      'hero.title': 'Geliştirdiğim alanlar: <span class="typed-text" id="typed"></span><span class="cursor"></span>',
+      'hero.bio': 'Ankara merkezli Yazılım Ekip Lideri ve aktif kod yazan Kıdemli Java Geliştiriciyim. ERP platformları, Spring Boot servisleri, entegrasyon katmanları ve ekiplerin kullandığı üretim yazılımları tasarlayıp geliştiriyorum.',
+      'hero.viewProjects': '&#128196; Projeleri gör',
+      'hero.contactMe': '&#9993; İletişime geç',
+      'hero.scroll': 'keşfetmek için kaydır',
+      'about.label': '01 — Hakkımda',
+      'about.title': 'Ben kimim',
+      'about.p1': 'Ben <strong>Enes Karaoğlu</strong>, Ankara\'da Bilişim AŞ bünyesinde Yazılım Ekip Lideri olarak çalışıyorum. Ekip liderliği yaparken altyapı ve yeni teknoloji geliştirmelerinde hâlâ aktif olarak kod yazıyorum.',
+      'about.p2': 'Çalışma alanlarım Java, Spring Boot, J2EE, ERP sistemleri, REST ve SOAP servisleri, frontend entegrasyonları, deployment modernizasyonu ve üçüncü parti kurumsal entegrasyonlardır.',
+      'about.p3': '<strong>Senior Java Developer</strong> veya <strong>Java Software Team Lead</strong> rollerinde; mimari sahiplik, pratik teslimat ve ekip koordinasyonunu birlikte yürütebilirim.',
+      'about.education': 'Eğitim: <strong>Endüstri Mühendisliği</strong>, Sakarya Üniversitesi, 2006.',
+      'about.email': '&#128231; E-posta gönder',
+      'about.techLabel': 'Teknolojiler & Araçlar',
+      'projects.label': '02 — Projeler',
+      'projects.title': 'Seçili çalışmalar',
+      'project.codeek.title': 'Codeek Mobil Uygulama Portföyü',
+      'project.codeek.desc': 'Mobil uygulama ürün portföyünü sıfırdan yayına kadar geliştirdim; ürün fikri, kullanıcı akışı, ikonlar, renk sistemi, uygulama metinleri, kodlama, test, deployment, Google Play yayını, AdMob, gizlilik politikaları ve geliştirici web sitesi süreçlerini yönettim.',
+      'project.erpRest.title': 'Spring Boot ERP REST Servisleri',
+      'project.erpRest.desc': 'ERP platformuna bağlı Spring Boot REST servislerini tasarlayıp geliştirdim ve kurumsal verileri yapılandırılmış API\'ler üzerinden sundum.',
+      'project.ejbRest.title': 'EJB Servislerinden REST Mimarisine Geçiş',
+      'project.ejbRest.desc': 'Mevcut J2EE ERP EJB servislerini REST API\'lere dönüştürdüm ve yeni servis akışları için DevExtreme tabanlı frontend entegrasyonları geliştirdim.',
+      'project.iot.title': 'IoT Makine Entegrasyonu',
+      'project.iot.desc': 'MQTT akışlarından gelen makine verilerini Java, Redis, REST, WebSocket ve Apache Flink ile işleyerek ERP\'ye uygun üretim verisi olarak yayınladım.',
+      'project.docker.title': 'Uygulamaların Dockerize Edilmesi',
+      'project.docker.desc': 'Spring Boot, Angular, JavaScript, J2EE ve Python uygulamalarını Dockerize ettim; Harbor registry üzerinden image yönetimi ve deployment süreçlerini hazırladım.',
+      'project.jira.title': 'Jira Raporlama Uygulaması',
+      'project.jira.desc': 'Jira verisine bağlanan, REST servisleri ve Google Charts ile yazılım ekibi analitiği sunan Spring Boot ve Thymeleaf tabanlı raporlama uygulaması geliştirdim.',
+      'project.redis.title': 'Redis ve ERP Entegrasyonu',
+      'project.redis.desc': 'İş emirleri, makineler ve ürün ağaçları gibi ERP varlıklarını Redis JSON verisiyle entegre ettim; Oracle trigger ile Redis iş akışları kurdum.',
+      'experience.label': '03 — Deneyim',
+      'experience.title': 'Çalıştığım yerler',
+      'experience.current.period': '04/2018 — Günümüz',
+      'experience.current.role': 'Yazılım Ekip Lideri',
+      'experience.current.li1': 'ERP ürünleri çevresinde React frontend ve Spring Boot backend uygulamalarının mimari tasarımını, geliştirilmesini, devreye alınmasını ve yaygınlaştırılmasını yönetiyorum.',
+      'experience.current.li2': 'Mevcut core ERP ürünü için Swagger/OpenAPI destekli Java/Spring REST API mimarisini tasarlayıp hayata geçirdim.',
+      'experience.current.li3': 'Java yükseltmeleri, IDE güncellemeleri, SOAP/REST servis güncellemeleri, Dockerization ve deployment ortam iyileştirmeleriyle core sistemleri modernize ettim.',
+      'experience.current.li4': 'Spring Boot, DevExtreme, J2EE, Swing, JSF ve PrimeFaces geliştirme ekiplerine liderlik ederken altyapı kodlamasına aktif katkı sağlıyorum.',
+      'experience.current.li5': 'Jira üzerinde Sprint/Kanban süreçlerini, Confluence dokümantasyonunu ve mühendis/danışman iş akışlarını Scrum Master rolüyle yönetiyorum.',
+      'experience.senior.role': 'Kıdemli Yazılım Geliştirici',
+      'experience.senior.li1': 'Java Swing, J2EE, JSF ve PrimeFaces ile analiz edilmiş iş modüllerini geliştirdim.',
+      'experience.senior.li2': 'Farklı veritabanları ve üçüncü parti SOAP servisleri üzerinden ERP entegrasyonları gerçekleştirdim.',
+      'experience.senior.li3': 'Oracle veritabanı kurulumu, optimizasyonu ve kurumsal uygulama desteği üzerinde çalıştım.',
+      'experience.developer.role': 'Yazılım Geliştirici',
+      'experience.developer.li1': 'Java Swing GUI ekranları ve J2EE uygulama özellikleri geliştirdim.',
+      'experience.developer.li2': 'Analiz edilen ERP ekranları ve iş akışları için Oracle tablo ve view yapıları oluşturdum.',
+      'contact.label': '04 — İletişim',
+      'contact.title': 'İletişime geç',
+      'contact.subtitle': 'Senior Java Developer ve Java Software Team Lead fırsatları için görüşmeye açığım.',
+      'contact.sayHello': '&#9993;&nbsp; Merhaba de',
+      'footer.copy': '<span>Enes Karaoğlu</span> tarafından tasarlandı ve geliştirildi &mdash; 2026',
+      typedWords: ['ERP platformları.', 'Spring Boot API\'leri.', 'mobil uygulama ürünleri.', 'kurumsal entegrasyonlar.', 'Java ekipleri.']
+    }
+  };
+
+  let currentLang = localStorage.getItem('portfolio-lang') || 'en';
+  let words = translations[currentLang].typedWords;
+  let wi = 0, ci = 0, deleting = false, typingTimer;
+
+  function applyLanguage(lang) {
+    currentLang = translations[lang] ? lang : 'en';
+    localStorage.setItem('portfolio-lang', currentLang);
+    const dictionary = translations[currentLang];
+
+    document.documentElement.lang = currentLang;
+    document.title = dictionary.metaTitle;
+    document.querySelector('meta[name="description"]').setAttribute('content', dictionary.metaDescription);
+
+    document.querySelectorAll('[data-i18n]').forEach(node => {
+      node.textContent = dictionary[node.dataset.i18n] || node.textContent;
+    });
+    document.querySelectorAll('[data-i18n-html]').forEach(node => {
+      node.innerHTML = dictionary[node.dataset.i18nHtml] || node.innerHTML;
+    });
+    document.querySelectorAll('.lang-btn').forEach(button => {
+      button.classList.toggle('active', button.dataset.lang === currentLang);
+      button.setAttribute('aria-pressed', String(button.dataset.lang === currentLang));
+    });
+
+    words = dictionary.typedWords;
+    wi = 0;
+    ci = 0;
+    deleting = false;
+    clearTimeout(typingTimer);
+    const typed = document.getElementById('typed');
+    if (typed) typed.textContent = '';
+    typingTimer = setTimeout(type, 500);
+  }
 
   function type() {
+    const typed = document.getElementById('typed');
+    if (!typed) return;
     const word = words[wi];
     if (!deleting) {
-      el.textContent = word.slice(0, ++ci);
-      if (ci === word.length) { deleting = true; return setTimeout(type, 1800); }
+      typed.textContent = word.slice(0, ++ci);
+      if (ci === word.length) { deleting = true; typingTimer = setTimeout(type, 1800); return; }
     } else {
-      el.textContent = word.slice(0, --ci);
+      typed.textContent = word.slice(0, --ci);
       if (ci === 0) { deleting = false; wi = (wi + 1) % words.length; }
     }
-    setTimeout(type, deleting ? 55 : 90);
+    typingTimer = setTimeout(type, deleting ? 55 : 90);
   }
-  setTimeout(type, 1400);
+
+  document.querySelectorAll('.lang-btn').forEach(button => {
+    button.addEventListener('click', () => applyLanguage(button.dataset.lang));
+  });
+  applyLanguage(currentLang);
 
   // Scroll reveal
   const observer = new IntersectionObserver(entries => {
