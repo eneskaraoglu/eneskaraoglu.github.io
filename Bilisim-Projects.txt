@@ -1,0 +1,13 @@
+Can you make me tech stack for my cv , name can be  cv + bilisim + date  md file. 
+Use this project; 
+
+C:\WORKSPACE\erp-plus , 
+C:\WORKSPACE\AI\erpLlm , 
+C:\JAVAKAYNAK\erp-git-maven , 
+C:\JAVAKAYNAK\mdepo-git , 
+C:\JAVAKAYNAK\mvardiya-git , 
+C:\WORKSPACE\akillimobilsaha,
+C:\WORKSPACE\BilisimERP-4.0-Spring , 
+C:\WORKSPACE\bilisim-mes
+C:\JAVAKAYNAK\BilisimPM\pm-git,
+C:\WORKSPACE\erp-docker.
