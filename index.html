@@ -64,22 +64,36 @@
   </div>
   </div>
   <div class="hero-visual" aria-hidden="true">
-    <div class="device">
-      <span class="device-key device-key--a"></span>
-      <span class="device-key device-key--b"></span>
-      <div class="device-bezel">
-        <div class="device-bar">
-          <span class="led led--green"></span>
-          <span>SYS://INTEGRATION-BUS</span>
-          <span class="spinner"></span>
-        </div>
-        <div class="device-screen"></div>
-        <div class="device-foot">
-          <span>PWR</span><span class="led led--red"></span>
-          <span class="device-grille"></span>
+    <div class="rack">
+      <div class="rack-ear"><span class="rack-hole"></span><span class="rack-hole"></span></div>
+      <div class="rack-face">
+        <div class="rack-bar">
+          <span class="led led--green"></span><span>PWR</span>
+          <span class="rack-title">INTEGRATION BAY</span>
+          <span class="rack-meter"><i></i><i></i><i></i><i></i><i></i></span>
           <span>CH-01</span>
         </div>
+        <div class="rack-bay" id="patch-bay">
+          <div class="jack" data-port="rest"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">REST</span></div>
+          <div class="jack" data-port="soap"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">SOAP</span></div>
+          <div class="jack" data-port="mqtt"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">MQTT</span></div>
+          <div class="jack" data-port="ws"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">WEBSOCKET</span></div>
+          <div class="jack" data-port="java"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">JAVA</span></div>
+          <div class="jack" data-port="go"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">GO</span></div>
+          <div class="jack" data-port="spring"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">SPRING</span></div>
+          <div class="jack" data-port="react"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">REACT</span></div>
+          <div class="jack" data-port="oracle"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">ORACLE</span></div>
+          <div class="jack" data-port="redis"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">REDIS</span></div>
+          <div class="jack" data-port="rabbitmq"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">RABBITMQ</span></div>
+          <div class="jack" data-port="llm"><span class="jack-led"></span><span class="jack-socket"></span><span class="jack-label">LLM</span></div>
+        </div>
+        <div class="rack-foot">
+          <span>IN &#8644; OUT</span>
+          <span class="rack-grille"></span>
+          <span>SN 2008&ndash;2026</span>
+        </div>
       </div>
+      <div class="rack-ear"><span class="rack-hole"></span><span class="rack-hole"></span></div>
     </div>
   </div>
 </section>

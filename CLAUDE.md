@@ -34,12 +34,12 @@ A matte-plastic chassis (`--chassis: #e0e5ec`) with hardware mounted on it, lit 
 - **Materials:** `--chassis`, `--panel`, `--recessed`, `--ink`, `--label`, `--dark` / `--dark-2` (screens, bezels), `--screen-text`
 - **Signal colors:** `--accent` #ff4757 (LEDs, glows, large marks only), `--accent-face` #dc2f3e (button faces — white text passes AA), `--accent-text` #b8202f (small red text on chassis), `--led-green`, `--tape` (masking tape)
 - **Shadows:** `--sh-card`, `--sh-floating`, `--sh-key`, `--sh-pressed`, `--sh-recessed`, `--sh-sharp`, `--sh-accent`, `--glow-red`, `--glow-green`, `--emboss` (white text-shadow). Use these — don't hand-write new shadow values.
-- **Textures:** `--noise` (inline SVG, on `body::before`), `--scanlines`, `--screw`; carbon fibre is a shared selector group (`.device-bezel, .route-box, .tech-marquee`). No external texture images.
+- **Textures:** `--noise` (inline SVG, on `body::before`), `--scanlines`, `--screw`; carbon fibre is a shared selector group (`.rack-face, .route-box, .tech-marquee`). No external texture images.
 - **Radius:** `--r-sm` 4 · `--r-md` 8 · `--r-lg` 16 · `--r-xl` 24 · `--r-2xl` 32
 - **Motion:** `--spring` (overshoot, for lifts/entrances), `--ease`; presses are 150ms `translateY(2px)` + `--sh-pressed`
 - **Fonts:** Inter (UI), JetBrains Mono (labels, tags, numbers, screens — uppercase with wide tracking for stamped labels)
 
-Reusable parts: `.surface` = bolted module (raised card with four corner screws; vent slots are the `::after` on `.skill-group` / `.project-card`), `.led` / `.led--green` = pulsing status LED. The hero `.device` is a CSS-built screen whose `.device-screen` hosts the network canvas.
+Reusable parts: `.surface` = bolted module (raised card with four corner screws; vent slots are the `::after` on `.skill-group` / `.project-card`), `.led` / `.led--green` = pulsing status LED. The hero `.rack` is a CSS-built patch bay: `.jack[data-port]` elements in `#patch-bay`, with cables drawn by JS into an SVG layer.
 
 ### Scroll reveal
 
@@ -54,7 +54,7 @@ Add `class="reveal"` to any element to opt into the entrance animation (`Interse
 - **Nav state** — active link + `#nav-path` (`<enes/projects />`) and `#nav-progress` scroll bar
 - **Timeline** — sets `--progress` on `.timeline` to draw the red LED current in the pipe
 - **Route transition** — in-page `a[href^="#"]` clicks show a terminal card (`routeLines` per section id) before jumping
-- **Hero network** — canvas inside `.device-screen` (the hero device CRT) with languages/protocols exchanging packets; pauses off-screen
+- **Patch bay** — hangs SVG cables between `.jack` sockets from the `pool` of port pairs (no jack used twice), sends signal pulses along them, and re-patches one cable every ~3s; re-routes on resize via `ResizeObserver`, pauses off-screen. To add a port: add a `.jack` in `index.html` and pairs using its `data-port` to `pool`
 
 All motion is skipped or frozen under `prefers-reduced-motion`.
 

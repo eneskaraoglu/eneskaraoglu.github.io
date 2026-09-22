@@ -210,132 +210,174 @@
     });
   }
 
-  // Hero integration network — languages & protocols exchanging packets
-  (function heroNetwork() {
+  // Hero patch bay — cables re-patch between integration ports, signals travel along them
+  (function patchBay() {
     const hero = document.getElementById('hero');
-    const canvas = document.createElement('canvas');
-    canvas.className = 'hero-network';
-    canvas.setAttribute('aria-hidden', 'true');
-    const screen = hero.querySelector('.device-screen');
-    if (!screen) return;
-    screen.appendChild(canvas);
-    const ctx = canvas.getContext('2d');
+    const bay = document.getElementById('patch-bay');
+    if (!bay) return;
 
-    const labels = ['Java', 'Spring Boot', 'REST', 'SOAP', 'Go', 'Oracle', 'MQTT', 'Kotlin', 'React',
-      'PostgreSQL', 'WebSocket', 'Python', 'RabbitMQ', 'TypeScript', 'Redis', 'OpenAPI', 'OAuth2',
-      'Flink', 'Docker', 'e-Fatura', 'LLM', 'Angular', 'SQL'];
-    const css = getComputedStyle(document.documentElement);
-    const screenText = css.getPropertyValue('--screen-text').trim() || '#a8b2d1';
-    const screenLine = css.getPropertyValue('--screen-line').trim() || 'rgba(168, 178, 209, 0.18)';
-    const accent = css.getPropertyValue('--accent').trim() || '#ff4757';
-    const green = css.getPropertyValue('--led-green').trim() || '#22c55e';
+    const NS = 'http://www.w3.org/2000/svg';
+    const make = (tag, attrs = {}) => {
+      const el = document.createElementNS(NS, tag);
+      Object.entries(attrs).forEach(([k, v]) => el.setAttribute(k, v));
+      return el;
+    };
 
-    let w = 0, h = 0, nodes = [], edges = [], packets = [], raf = 0, visible = true, lastSpawn = 0;
+    // pairings taken from real projects (ERP, MES, condoctor, DeskIQ…)
+    const pool = [
+      ['spring', 'rest'], ['spring', 'oracle'], ['java', 'soap'], ['go', 'rest'],
+      ['mqtt', 'redis'], ['redis', 'ws'], ['react', 'ws'], ['react', 'rest'],
+      ['spring', 'rabbitmq'], ['rabbitmq', 'ws'], ['llm', 'rest'], ['go', 'oracle'],
+      ['java', 'oracle'], ['soap', 'oracle'], ['mqtt', 'java'], ['llm', 'redis'],
+    ];
+    const colors = ['#ff4757', '#e0e5ec', '#f5c518', '#4a5568', '#ff4757'];
+    const ACTIVE = 5;
 
-    function layout() {
-      const dpr = Math.min(window.devicePixelRatio || 1, 2);
-      w = canvas.clientWidth; h = canvas.clientHeight;
-      canvas.width = w * dpr; canvas.height = h * dpr;
-      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    const jacks = {};
+    bay.querySelectorAll('.jack').forEach(j => { jacks[j.dataset.port] = j; });
 
-      const count = w < 380 ? 11 : 14;
-      // jittered grid so labels spread across the well instead of clumping
-      const cols = Math.max(2, Math.round(Math.sqrt(count * (w / h) * 0.6)));
-      const rows = Math.ceil(count / cols);
-      const cellW = (w - 130) / cols, cellH = (h - 60) / rows;
-      nodes = labels.slice(0, count).map((label, i) => ({
-        label,
-        x: 30 + (i % cols + 0.2 + Math.random() * 0.6) * cellW,
-        y: 30 + ((i / cols | 0) + 0.2 + Math.random() * 0.6) * cellH,
-        vx: (Math.random() - .5) * .18,
-        vy: (Math.random() - .5) * .18,
-        pulse: 0,
-      }));
-      const seen = new Set();
-      edges = [];
-      nodes.forEach((n, i) => {
-        nodes.map((m, j) => ({ j, d: (m.x - n.x) ** 2 + (m.y - n.y) ** 2 }))
-          .filter(o => o.j !== i).sort((a, b) => a.d - b.d).slice(0, 2)
-          .forEach(({ j }) => {
-            const key = Math.min(i, j) + '-' + Math.max(i, j);
-            if (!seen.has(key)) { seen.add(key); edges.push([i, j]); }
-          });
-      });
-      packets = [];
+    const svg = make('svg', { class: 'rack-cables' });
+    const cableLayer = make('g');
+    const packetLayer = make('g');
+    svg.append(cableLayer, packetLayer);
+    bay.appendChild(svg);
+
+    let cables = [], colorIndex = 0, raf = 0, visible = true, swapTimer = 0;
+
+    function socketCenter(port) {
+      const socket = jacks[port].querySelector('.jack-socket');
+      const r = socket.getBoundingClientRect(), b = bay.getBoundingClientRect();
+      return { x: r.left + r.width / 2 - b.left, y: r.top + r.height / 2 - b.top };
     }
 
-    function draw() {
-      ctx.clearRect(0, 0, w, h);
-      ctx.lineWidth = 1;
-      ctx.strokeStyle = screenLine;
-      ctx.setLineDash([3, 4]);
-      ctx.beginPath();
-      edges.forEach(([a, b]) => { ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); });
-      ctx.stroke();
-      ctx.setLineDash([]);
+    // gravity: cables hang below the lower of the two jacks
+    function pathFor(a, b) {
+      const p = socketCenter(a), q = socketCenter(b);
+      const dx = q.x - p.x;
+      const sag = Math.min(80, 22 + Math.hypot(dx, q.y - p.y) * 0.3);
+      const low = Math.max(p.y, q.y) + sag;
+      return { d: `M${p.x},${p.y} C${p.x + dx * 0.12},${low} ${q.x - dx * 0.12},${low} ${q.x},${q.y}`, p, q };
+    }
 
-      const dot = (x, y, r, color) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
+    function shape(cable) {
+      const { d, p, q } = pathFor(cable.a, cable.b);
+      cable.paths.forEach(path => path.setAttribute('d', d));
+      cable.len = cable.body.getTotalLength();
+      [[cable.plugA, p], [cable.plugB, q]].forEach(([plug, c]) => plug.setAttribute('transform', `translate(${c.x},${c.y})`));
+    }
 
-      // packets glow like LEDs on the CRT
-      ctx.shadowColor = accent;
-      ctx.shadowBlur = 8;
-      packets.forEach(p => {
-        const a = nodes[p.from], b = nodes[p.to];
-        dot(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 2.5, accent);
-      });
-      ctx.shadowBlur = 0;
+    function plug(color) {
+      const g = make('g', { class: 'plug' });
+      g.append(
+        make('circle', { r: 10, fill: '#1e2527', stroke: color, 'stroke-width': 3 }),
+        make('circle', { r: 3.5, cx: -2.5, cy: -2.5, fill: 'rgba(255,255,255,.35)' }),
+      );
+      return g;
+    }
 
-      ctx.font = '500 11px "JetBrains Mono", monospace';
-      ctx.textBaseline = 'middle';
-      nodes.forEach(n => {
-        const lit = n.pulse > 0.3;
-        if (n.pulse > 0) {
-          ctx.strokeStyle = `rgba(34, 197, 94, ${n.pulse * 0.7})`;
-          ctx.strokeRect(n.x - 5 - (1 - n.pulse) * 8, n.y - 5 - (1 - n.pulse) * 8, 10 + (1 - n.pulse) * 16, 10 + (1 - n.pulse) * 16);
-        }
-        if (lit) { ctx.shadowColor = green; ctx.shadowBlur = 10; }
-        ctx.fillStyle = lit ? green : 'rgba(168, 178, 209, 0.55)';
-        ctx.fillRect(n.x - 3, n.y - 3, 6, 6);
-        ctx.shadowBlur = 0;
-        ctx.fillStyle = lit ? green : screenText;
-        ctx.fillText(n.label.toUpperCase(), n.x + 10, n.y);
-      });
+    function connect(a, b, animate) {
+      const color = colors[colorIndex++ % colors.length];
+      const g = make('g', { class: 'cable' });
+      const shadow = make('path', { fill: 'none', stroke: 'rgba(0,0,0,.5)', 'stroke-width': 7, 'stroke-linecap': 'round', transform: 'translate(2,4)' });
+      const body = make('path', { fill: 'none', stroke: color, 'stroke-width': 5, 'stroke-linecap': 'round' });
+      const shine = make('path', { fill: 'none', stroke: 'rgba(255,255,255,.35)', 'stroke-width': 1.5, 'stroke-linecap': 'round', transform: 'translate(-1,-1.5)' });
+      const plugA = plug(color), plugB = plug(color);
+      g.append(shadow, body, shine, plugA, plugB);
+      cableLayer.appendChild(g);
+
+      const cable = { a, b, g, body, paths: [shadow, body, shine], plugA, plugB, len: 0, packets: [], next: 0, light: color !== '#ff4757' };
+      shape(cable);
+      jacks[a].classList.add('is-plugged');
+      jacks[b].classList.add('is-plugged');
+
+      if (animate) {
+        // the cable is pulled out from the first jack and seated in the second
+        cable.paths.forEach(path => {
+          path.style.strokeDasharray = cable.len;
+          path.animate([{ strokeDashoffset: cable.len }, { strokeDashoffset: 0 }],
+            { duration: 700, easing: 'cubic-bezier(.175,.885,.32,1.275)' })
+            .finished.then(() => { path.style.strokeDasharray = ''; });
+        });
+        plugB.animate([{ opacity: 0, transform: `${plugB.getAttribute('transform')} scale(1.6)` },
+                       { opacity: 1, transform: `${plugB.getAttribute('transform')} scale(1)` }],
+          { duration: 300, delay: 600, fill: 'backwards', easing: 'cubic-bezier(.175,.885,.32,1.275)' });
+      }
+      cables.push(cable);
+    }
+
+    function disconnect(cable) {
+      cables = cables.filter(c => c !== cable);
+      cable.packets.forEach(pk => pk.el.remove());
+      jacks[cable.a].classList.remove('is-plugged');
+      jacks[cable.b].classList.remove('is-plugged');
+      cable.g.style.opacity = '0';
+      setTimeout(() => cable.g.remove(), 260);
+    }
+
+    const used = () => new Set(cables.flatMap(c => [c.a, c.b]));
+    function freePairs() {
+      const busy = used();
+      return pool.filter(([a, b]) => !busy.has(a) && !busy.has(b));
+    }
+
+    function swap() {
+      if (!cables.length) return;
+      disconnect(cables[Math.random() * cables.length | 0]);
+      const options = freePairs();
+      if (options.length) { const [a, b] = options[Math.random() * options.length | 0]; setTimeout(() => connect(a, b, true), 320); }
     }
 
     function step(now) {
-      nodes.forEach(n => {
-        n.x += n.vx; n.y += n.vy;
-        if (n.x < 20 || n.x > w - 100) n.vx *= -1;
-        if (n.y < 20 || n.y > h - 20) n.vy *= -1;
-        n.pulse = Math.max(0, n.pulse - 0.02);
+      cables.forEach(c => {
+        if (now > c.next && c.len) {
+          c.next = now + 900 + Math.random() * 1600;
+          const el = make('circle', { r: 3, class: 'packet', fill: c.light ? '#ff4757' : '#ffffff' });
+          packetLayer.appendChild(el);
+          c.packets.push({ el, t: 0, reverse: Math.random() < .5, speed: 1.4 + Math.random() });
+        }
+        c.packets = c.packets.filter(pk => {
+          pk.t += pk.speed;
+          if (pk.t >= c.len) {
+            pk.el.remove();
+            const dest = jacks[pk.reverse ? c.a : c.b];
+            dest.classList.add('is-flash');
+            setTimeout(() => dest.classList.remove('is-flash'), 180);
+            return false;
+          }
+          const pt = c.body.getPointAtLength(pk.reverse ? c.len - pk.t : pk.t);
+          pk.el.setAttribute('cx', pt.x);
+          pk.el.setAttribute('cy', pt.y);
+          return true;
+        });
       });
-      if (now - lastSpawn > 260 && edges.length) {
-        lastSpawn = now;
-        const [a, b] = edges[Math.random() * edges.length | 0];
-        const flip = Math.random() < .5;
-        packets.push({ from: flip ? a : b, to: flip ? b : a, t: 0, speed: .006 + Math.random() * .01 });
-      }
-      packets = packets.filter(p => {
-        p.t += p.speed;
-        if (p.t >= 1) { nodes[p.to].pulse = 1; return false; }
-        return true;
-      });
-      draw();
       raf = visible && !document.hidden ? requestAnimationFrame(step) : 0;
     }
 
-    function start() { if (!raf && !reduceMotion) raf = requestAnimationFrame(step); }
+    function start() {
+      if (reduceMotion) return;
+      if (!raf) raf = requestAnimationFrame(step);
+      if (!swapTimer) swapTimer = setInterval(() => { if (visible && !document.hidden) swap(); }, 3200);
+    }
 
-    layout();
-    draw();
+    // initial patch: pick non-overlapping pairs
+    const shuffled = pool.slice().sort(() => Math.random() - .5);
+    for (const [a, b] of shuffled) {
+      if (cables.length >= ACTIVE) break;
+      const busy = used();
+      if (!busy.has(a) && !busy.has(b)) connect(a, b, false);
+    }
+
+    // re-route cables whenever the bay reflows (resize, fonts loading)
+    new ResizeObserver(() => cables.forEach(shape)).observe(bay);
+
+    // hovering a jack highlights the cables patched into it
+    Object.entries(jacks).forEach(([port, jack]) => {
+      jack.addEventListener('mouseenter', () => cables.forEach(c => c.g.classList.toggle('is-hot', c.a === port || c.b === port)));
+      jack.addEventListener('mouseleave', () => cables.forEach(c => c.g.classList.remove('is-hot')));
+    });
+
     if (reduceMotion) return;
     start();
-
     new IntersectionObserver(([entry]) => { visible = entry.isIntersecting; if (visible) start(); }).observe(hero);
     document.addEventListener('visibilitychange', () => { if (!document.hidden) start(); });
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-      clearTimeout(resizeTimer);
-      resizeTimer = setTimeout(() => { layout(); draw(); }, 200);
-    });
   })();

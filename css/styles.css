@@ -120,7 +120,7 @@ body::before {
 }
 
 /* carbon-fibre weave for dark hardware */
-.device-bezel,
+.rack-face,
 .route-box,
 .tech-marquee {
   background-color: var(--dark);
@@ -500,63 +500,97 @@ section {
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, .2);
 }
 
-/* ── Hero device ────────────────────────────────────────────── */
+/* ── Hero patch bay ─────────────────────────────────────────── */
 .hero-visual {
   opacity: 0;
   animation: slideUp .8s var(--spring) forwards .5s;
 }
 
-.device {
-  position: relative;
-  padding: 14px;
-  border-radius: var(--r-2xl);
+/* 19" rack unit: aluminium ears bolted either side of the face */
+.rack {
+  display: flex;
+  gap: 8px;
+  padding: 10px;
+  border-radius: var(--r-xl);
   background: var(--chassis);
   box-shadow: var(--sh-floating);
-  transition: transform .5s var(--spring);
 }
 
-.device:hover { transform: scale(1.015); }
-
-/* physical side keys */
-.device-key {
-  position: absolute;
-  right: -6px;
-  width: 6px;
-  height: 44px;
-  border-radius: 0 4px 4px 0;
-  background: var(--recessed);
-  box-shadow: 2px 2px 3px var(--shadow);
+.rack-ear {
+  flex: none;
+  width: 22px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding: 18px 0;
+  border-radius: 10px;
+  background:
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, .35) 0 1px, transparent 1px 3px),
+    linear-gradient(90deg, #c3cad5, #eceff3 50%, #c3cad5);
+  box-shadow: var(--sh-sharp);
 }
 
-.device-key--a { top: 22%; }
-.device-key--b { top: calc(22% + 56px); height: 28px; }
+.rack-hole {
+  width: 10px;
+  height: 16px;
+  border-radius: 5px;
+  background: var(--dark-2);
+  box-shadow: inset 1px 1px 2px #000, 0 1px 0 #fff;
+}
 
-.device-bezel {
+.rack-face {
+  flex: 1;
+  min-width: 0;
   border: 4px solid var(--dark-2);
-  border-radius: var(--r-xl);
+  border-radius: var(--r-lg);
   padding: .75rem;
   box-shadow: inset 0 2px 6px rgba(0, 0, 0, .5);
 }
 
-.device-bar,
-.device-foot {
+.rack-bar,
+.rack-foot {
   display: flex;
   align-items: center;
   gap: .6rem;
   font-family: var(--font-mono);
-  font-size: .66rem;
+  font-size: .64rem;
   font-weight: 700;
   letter-spacing: .1em;
   color: var(--screen-text);
 }
 
-.device-bar { padding: .1rem .35rem .65rem; }
-.device-bar .spinner { margin-left: auto; }
-.device-foot { padding: .7rem .35rem .1rem; }
-.device-foot .led { width: 7px; height: 7px; }
+.rack-bar  { padding: .1rem .35rem .7rem; white-space: nowrap; }
+.rack-foot { padding: .7rem .35rem .1rem; }
+.rack-title { margin: 0 auto; color: #e0e5ec; }
+
+/* level meter */
+.rack-meter {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 12px;
+}
+
+.rack-meter i {
+  width: 3px;
+  height: 100%;
+  border-radius: 1px;
+  background: var(--accent);
+  box-shadow: 0 0 4px rgba(255, 71, 87, .7);
+  transform-origin: bottom;
+  animation: meter .7s ease-in-out infinite alternate;
+}
+
+.rack-meter i:nth-child(2) { animation-delay: -.2s; }
+.rack-meter i:nth-child(3) { animation-delay: -.45s; }
+.rack-meter i:nth-child(4) { animation-delay: -.1s; }
+.rack-meter i:nth-child(5) { animation-delay: -.6s; }
+
+@keyframes meter { from { transform: scaleY(.2); } to { transform: scaleY(1); } }
 
 /* speaker grille */
-.device-grille {
+.rack-grille {
   flex: 1;
   height: 8px;
   margin: 0 .4rem;
@@ -564,43 +598,79 @@ section {
   border-radius: 2px;
 }
 
-.spinner {
-  width: 12px;
-  height: 12px;
-  border-radius: 50%;
-  border: 2px solid rgba(168, 178, 209, .25);
-  border-top-color: var(--accent);
-  animation: spin 1s linear infinite;
-}
-
-@keyframes spin { to { transform: rotate(360deg); } }
-
-/* the CRT itself */
-.device-screen {
+/* the jack field */
+.rack-bay {
   position: relative;
-  aspect-ratio: 1 / 1;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.5rem .4rem;
+  padding: 1.4rem .4rem 2.6rem;
   border-radius: var(--r-md);
-  background: radial-gradient(ellipse at 30% 20%, #1b2a2f, #07090a 75%);
-  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .8), inset 0 4px 20px rgba(0, 0, 0, .9);
+  background: radial-gradient(ellipse at 30% 0%, #1d2629, #0b0f10 80%);
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, .8), inset 0 4px 16px rgba(0, 0, 0, .8);
+}
+
+.jack {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .45rem;
+}
+
+.jack-led {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #3a4447;
+  transition: background .2s var(--ease), box-shadow .2s var(--ease);
+}
+
+.jack.is-plugged .jack-led { background: var(--led-green); box-shadow: 0 0 6px 1px rgba(34, 197, 94, .7); }
+.jack.is-flash .jack-led   { background: var(--accent); box-shadow: 0 0 8px 2px rgba(255, 71, 87, .8); }
+
+/* 6.35mm socket: dark hole, knurled nut, shadowed collar */
+.jack-socket {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: radial-gradient(circle, #030404 0 28%, #5b656e 30% 38%, #d3d9e1 42% 50%, #8a949e 54%, #2b3336 60% 100%);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .12), 0 3px 6px rgba(0, 0, 0, .6);
+}
+
+/* label-maker tape under each jack — sits above the cables so it stays legible */
+.jack-label,
+.jack-led { position: relative; z-index: 2; }
+
+.jack-label {
+  box-shadow: 0 1px 3px rgba(0, 0, 0, .6);
+  max-width: 100%;
+  padding: 1px 5px;
+  border-radius: 2px;
+  font-family: var(--font-mono);
+  font-size: .58rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  color: var(--ink);
+  background: var(--chassis);
   overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.device-screen::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  pointer-events: none;
-  background: var(--scanlines);
-  background-size: 100% 4px;
-  box-shadow: inset 0 0 40px rgba(0, 0, 0, .7);
-}
-
-.hero-network {
+/* cables are drawn by JS into this layer */
+.rack-cables {
   position: absolute;
   inset: 0;
   width: 100%;
   height: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 1;
 }
+
+.cable { transition: opacity .25s var(--ease); }
+.cable.is-hot { filter: drop-shadow(0 0 5px rgba(255, 255, 255, .55)); }
+.packet { filter: drop-shadow(0 0 4px rgba(255, 71, 87, .95)); }
 
 /* ── Buttons — physical keys ────────────────────────────────── */
 .btn {
@@ -1277,7 +1347,7 @@ footer span { color: var(--ink); font-weight: 700; }
     grid-template-columns: 1fr;
     min-height: auto;
   }
-  .hero-visual { width: 100%; max-width: 30rem; justify-self: center; }
+  .hero-visual { width: 100%; max-width: 32rem; justify-self: center; }
   .hero-scroll { display: none; }
 }
 
@@ -1311,6 +1381,14 @@ footer span { color: var(--ink); font-weight: 700; }
   .contact-email { font-size: 1.15rem; }
   .contact-meta { width: 100%; }
   footer { flex-direction: column; align-items: flex-start; }
+}
+
+@media (max-width: 480px) {
+  .rack { gap: 6px; padding: 8px; }
+  .rack-ear { width: 14px; }
+  .rack-bar > span:last-child { display: none; }
+  .rack-bay { gap: 1.25rem .25rem; }
+  .jack-socket { width: 30px; height: 30px; }
 }
 
 @keyframes drawerIn {
