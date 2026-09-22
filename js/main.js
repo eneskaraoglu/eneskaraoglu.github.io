@@ -216,19 +216,19 @@
     const canvas = document.createElement('canvas');
     canvas.className = 'hero-network';
     canvas.setAttribute('aria-hidden', 'true');
-    const well = hero.querySelector('.hero-well');
-    if (!well) return;
-    well.appendChild(canvas);
+    const screen = hero.querySelector('.device-screen');
+    if (!screen) return;
+    screen.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
     const labels = ['Java', 'Spring Boot', 'REST', 'SOAP', 'Go', 'Oracle', 'MQTT', 'Kotlin', 'React',
       'PostgreSQL', 'WebSocket', 'Python', 'RabbitMQ', 'TypeScript', 'Redis', 'OpenAPI', 'OAuth2',
       'Flink', 'Docker', 'e-Fatura', 'LLM', 'Angular', 'SQL'];
     const css = getComputedStyle(document.documentElement);
-    const surface = css.getPropertyValue('--bg').trim() || '#E0E5EC';
-    const fg = css.getPropertyValue('--fg').trim() || '#3D4852';
-    const muted = css.getPropertyValue('--muted').trim() || '#6B7280';
-    const accent = css.getPropertyValue('--accent').trim() || '#6C63FF';
+    const screenText = css.getPropertyValue('--screen-text').trim() || '#a8b2d1';
+    const screenLine = css.getPropertyValue('--screen-line').trim() || 'rgba(168, 178, 209, 0.18)';
+    const accent = css.getPropertyValue('--accent').trim() || '#ff4757';
+    const green = css.getPropertyValue('--led-green').trim() || '#22c55e';
 
     let w = 0, h = 0, nodes = [], edges = [], packets = [], raf = 0, visible = true, lastSpawn = 0;
 
@@ -267,34 +267,38 @@
     function draw() {
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(107, 114, 128, 0.22)';
+      ctx.strokeStyle = screenLine;
+      ctx.setLineDash([3, 4]);
       ctx.beginPath();
       edges.forEach(([a, b]) => { ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); });
       ctx.stroke();
+      ctx.setLineDash([]);
 
       const dot = (x, y, r, color) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
 
+      // packets glow like LEDs on the CRT
+      ctx.shadowColor = accent;
+      ctx.shadowBlur = 8;
       packets.forEach(p => {
         const a = nodes[p.from], b = nodes[p.to];
-        dot(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 3, accent);
+        dot(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 2.5, accent);
       });
+      ctx.shadowBlur = 0;
 
-      ctx.font = '500 11px "Fira Code", monospace';
+      ctx.font = '500 11px "JetBrains Mono", monospace';
       ctx.textBaseline = 'middle';
       nodes.forEach(n => {
+        const lit = n.pulse > 0.3;
         if (n.pulse > 0) {
-          ctx.strokeStyle = `rgba(108, 99, 255, ${n.pulse * 0.6})`;
-          ctx.beginPath();
-          ctx.arc(n.x, n.y, 7 + (1 - n.pulse) * 12, 0, Math.PI * 2);
-          ctx.stroke();
+          ctx.strokeStyle = `rgba(34, 197, 94, ${n.pulse * 0.7})`;
+          ctx.strokeRect(n.x - 5 - (1 - n.pulse) * 8, n.y - 5 - (1 - n.pulse) * 8, 10 + (1 - n.pulse) * 16, 10 + (1 - n.pulse) * 16);
         }
-        // raised clay bump: dark shadow bottom-right, light top-left, surface on top
-        dot(n.x + 2, n.y + 2, 6, 'rgba(163, 177, 198, 0.75)');
-        dot(n.x - 2, n.y - 2, 6, 'rgba(255, 255, 255, 0.85)');
-        dot(n.x, n.y, 6, surface);
-        dot(n.x, n.y, 2.5, n.pulse > 0.3 ? accent : muted);
-        ctx.fillStyle = n.pulse > 0.3 ? accent : fg;
-        ctx.fillText(n.label, n.x + 12, n.y);
+        if (lit) { ctx.shadowColor = green; ctx.shadowBlur = 10; }
+        ctx.fillStyle = lit ? green : 'rgba(168, 178, 209, 0.55)';
+        ctx.fillRect(n.x - 3, n.y - 3, 6, 6);
+        ctx.shadowBlur = 0;
+        ctx.fillStyle = lit ? green : screenText;
+        ctx.fillText(n.label.toUpperCase(), n.x + 10, n.y);
       });
     }
 

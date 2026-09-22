@@ -27,17 +27,19 @@ The untracked CV files (`*.docx`, `*.pdf`, `*.md` CVs) in the root are not part 
 - `js/translations.js` — EN/TR dictionaries; elements opt in with `data-i18n` (text) or `data-i18n-html` (HTML)
 - `js/main.js` — all behaviour
 
-### Design system — Neumorphism / Soft UI
+### Design system — Industrial Skeuomorphism
 
-Every element is molded from one cool-grey surface (`--bg: #E0E5EC`); depth comes only from dual shadows (light top-left, dark bottom-right). No borders, no white cards. All tokens live in `:root` at the top of `styles.css`:
+A matte-plastic chassis (`--chassis: #e0e5ec`) with hardware mounted on it, lit from the top-left at 45°: highlights top/left, shadows bottom/right. Elevation levels: recessed (-1: slots, screens, grooves) → chassis (0) → panels (+1: cards) → keys (+2: buttons). All tokens live in `:root` at the top of `styles.css`:
 
-- **Color:** `--bg`, `--fg`, `--muted`, `--accent` (#6C63FF, fills and large text), `--accent-text` (#4F46E5 — use for small accent text; #6C63FF fails WCAG AA on the background), `--accent-2` (teal, success)
-- **Shadows:** `--raised`, `--raised-hover`, `--raised-sm`, `--inset`, `--inset-deep`, `--inset-sm`, `--press-accent` (pressed state on violet buttons). Use these tokens — don't hand-write new shadow values.
-- **Radius:** `--radius-lg` 32px (cards), `--radius` 16px (buttons, wells), `--radius-sm` 12px
-- **Motion:** `--t` 300ms, `--t-slow` 500ms, `--ease`
-- **Fonts:** Plus Jakarta Sans (display), DM Sans (body), Fira Code (code-flavoured bits only)
+- **Materials:** `--chassis`, `--panel`, `--recessed`, `--ink`, `--label`, `--dark` / `--dark-2` (screens, bezels), `--screen-text`
+- **Signal colors:** `--accent` #ff4757 (LEDs, glows, large marks only), `--accent-face` #dc2f3e (button faces — white text passes AA), `--accent-text` #b8202f (small red text on chassis), `--led-green`, `--tape` (masking tape)
+- **Shadows:** `--sh-card`, `--sh-floating`, `--sh-key`, `--sh-pressed`, `--sh-recessed`, `--sh-sharp`, `--sh-accent`, `--glow-red`, `--glow-green`, `--emboss` (white text-shadow). Use these — don't hand-write new shadow values.
+- **Textures:** `--noise` (inline SVG, on `body::before`), `--scanlines`, `--screw`; carbon fibre is a shared selector group (`.device-bezel, .route-box, .tech-marquee`). No external texture images.
+- **Radius:** `--r-sm` 4 · `--r-md` 8 · `--r-lg` 16 · `--r-xl` 24 · `--r-2xl` 32
+- **Motion:** `--spring` (overshoot, for lifts/entrances), `--ease`; presses are 150ms `translateY(2px)` + `--sh-pressed`
+- **Fonts:** Inter (UI), JetBrains Mono (labels, tags, numbers, screens — uppercase with wide tracking for stamped labels)
 
-`class="surface"` gives the raised 32px clay card. Icon wells and tags use inset shadows. Hover = lift + `--raised-hover`; active = press to `--inset-sm`.
+Reusable parts: `.surface` = bolted module (raised card with four corner screws; vent slots are the `::after` on `.skill-group` / `.project-card`), `.led` / `.led--green` = pulsing status LED. The hero `.device` is a CSS-built screen whose `.device-screen` hosts the network canvas.
 
 ### Scroll reveal
 
@@ -50,9 +52,9 @@ Add `class="reveal"` to any element to opt into the entrance animation (`Interse
 - **Scroll reveal**, **mobile nav** (`.open` on `#nav-links` and `#nav-toggle`, `aria-expanded`)
 - **Title decode** — `.section-title` scrambles through code glyphs on first view
 - **Nav state** — active link + `#nav-path` (`<enes/projects />`) and `#nav-progress` scroll bar
-- **Timeline** — sets `--progress` on `.timeline` to draw the violet fill
+- **Timeline** — sets `--progress` on `.timeline` to draw the red LED current in the pipe
 - **Route transition** — in-page `a[href^="#"]` clicks show a terminal card (`routeLines` per section id) before jumping
-- **Hero network** — canvas inside `.hero-well` with languages/protocols exchanging packets; pauses off-screen
+- **Hero network** — canvas inside `.device-screen` (the hero device CRT) with languages/protocols exchanging packets; pauses off-screen
 
 All motion is skipped or frozen under `prefers-reduced-motion`.
 
