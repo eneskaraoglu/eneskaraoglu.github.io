@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Overview
 
-Personal developer portfolio for **Enes Karaoglu**, hosted at `https://eneskaraoglu.github.io` via GitHub Pages. The entire site is a single file: `index.html`, with all CSS and JavaScript inlined — no build tools, no dependencies, no package manager.
+Personal developer portfolio for **Enes Karaoglu**, hosted at `https://eneskaraoglu.github.io` via GitHub Pages. Static site — no build tools, no dependencies, no package manager.
 
 ## Development & Deployment
 
@@ -13,66 +13,59 @@ Personal developer portfolio for **Enes Karaoglu**, hosted at `https://eneskarao
 **Deploy:** Push to `main` branch; GitHub Pages publishes automatically.
 
 ```powershell
-git add index.html
+git add index.html css/styles.css js/main.js js/translations.js
 git commit -m "your message"
 git push origin main
 ```
 
+The untracked CV files (`*.docx`, `*.pdf`, `*.md` CVs) in the root are not part of the site — don't commit them unless asked (anything pushed is publicly downloadable).
+
 ## Architecture
 
-Everything lives in `index.html` in this order:
+- `index.html` — markup: `<nav>`, two `.tech-marquee` bands, five sections (`#hero`, `#about`, `#projects`, `#experience`, `#contact`), `<footer>`
+- `css/styles.css` — all styles
+- `js/translations.js` — EN/TR dictionaries; elements opt in with `data-i18n` (text) or `data-i18n-html` (HTML)
+- `js/main.js` — all behaviour
 
-1. `<style>` block — all CSS
-2. `<nav>` — fixed glassmorphism navigation
-3. Five `<section>` elements: `#hero`, `#about`, `#projects`, `#experience`, `#contact`
-4. `<footer>`
-5. `<script>` block — all JavaScript (typed effect, scroll reveal, mobile nav)
+### Design system — Neumorphism / Soft UI
 
-### Design system (CSS custom properties)
+Every element is molded from one cool-grey surface (`--bg: #E0E5EC`); depth comes only from dual shadows (light top-left, dark bottom-right). No borders, no white cards. All tokens live in `:root` at the top of `styles.css`:
 
-All colors and sizing are defined in `:root` at the top of `<style>`:
+- **Color:** `--bg`, `--fg`, `--muted`, `--accent` (#6C63FF, fills and large text), `--accent-text` (#4F46E5 — use for small accent text; #6C63FF fails WCAG AA on the background), `--accent-2` (teal, success)
+- **Shadows:** `--raised`, `--raised-hover`, `--raised-sm`, `--inset`, `--inset-deep`, `--inset-sm`, `--press-accent` (pressed state on violet buttons). Use these tokens — don't hand-write new shadow values.
+- **Radius:** `--radius-lg` 32px (cards), `--radius` 16px (buttons, wells), `--radius-sm` 12px
+- **Motion:** `--t` 300ms, `--t-slow` 500ms, `--ease`
+- **Fonts:** Plus Jakarta Sans (display), DM Sans (body), Fira Code (code-flavoured bits only)
 
-```css
---accent-1: #ff4d2e;   /* red-orange — primary brand color (codeek QR app) */
---accent-2: #3b82f6;   /* blue — secondary (codeek Math app) */
---accent-3: #ff8c42;   /* amber — tertiary / labels / timeline */
---bg-1/2/3             /* dark background layers */
---glass-bg / --glass-border / --glass-hover   /* glassmorphism values */
---radius: 16px
---nav-h: 64px
-```
-
-When changing the color theme, update the `:root` variables **and** the hardcoded `rgba()` values below them (radial gradient orbs, `.btn-primary` shadows, `.tag` background/border, `.timeline-item::before` glow, `.social-link:hover` shadow). The `rgba()` values cannot reference CSS variables so they must be updated manually.
-
-### Glassmorphism utility
-
-Any element that needs the glass card look gets `class="glass"`:
-
-```css
-.glass { background: var(--glass-bg); border: 1px solid var(--glass-border);
-         backdrop-filter: blur(16px); border-radius: var(--radius); }
-```
+`class="surface"` gives the raised 32px clay card. Icon wells and tags use inset shadows. Hover = lift + `--raised-hover`; active = press to `--inset-sm`.
 
 ### Scroll reveal
 
-Add `class="reveal"` to any element to opt into the entrance animation. The `IntersectionObserver` in the `<script>` block adds `.visible` when the element enters the viewport (threshold 0.12), triggering the CSS transition on `opacity` and `transform`.
+Add `class="reveal"` to any element to opt into the entrance animation (`IntersectionObserver`, threshold 0.12, adds `.visible`). Hero elements use `@keyframes fadeUp` with delays instead.
 
-Hero elements use named `@keyframes fadeUp` with CSS animation-delay instead, since they fire immediately on load.
+### JavaScript (`js/main.js`)
 
-### JavaScript (bottom of file)
+- **i18n** — `applyLanguage()`; bumps `i18nVersion` so in-flight title decode animations abort
+- **Typed text** — cycles `typedWords` from translations into `#typed`
+- **Scroll reveal**, **mobile nav** (`.open` on `#nav-links` and `#nav-toggle`, `aria-expanded`)
+- **Title decode** — `.section-title` scrambles through code glyphs on first view
+- **Nav state** — active link + `#nav-path` (`<enes/projects />`) and `#nav-progress` scroll bar
+- **Timeline** — sets `--progress` on `.timeline` to draw the violet fill
+- **Route transition** — in-page `a[href^="#"]` clicks show a terminal card (`routeLines` per section id) before jumping
+- **Hero network** — canvas inside `.hero-well` with languages/protocols exchanging packets; pauses off-screen
 
-Three self-contained behaviours, no functions exported:
-- **Typed text** — cycles `words[]` array with typewriter effect into `#typed`
-- **Scroll reveal** — `IntersectionObserver` on all `.reveal` elements
-- **Mobile nav** — toggles `.open` class on `#nav-links` via `#nav-toggle` button
+All motion is skipped or frozen under `prefers-reduced-motion`.
 
-## Content Placeholders to Replace
+## Content to update
 
 | Location | What to update |
 |---|---|
-| `#hero` | Bio paragraph, typed `words[]` array in `<script>` |
+| `#hero` | Bio (`hero.bio` in translations), `typedWords` |
 | `#about .about-text` | Bio paragraphs |
-| `.skills-grid` | `.skill-pill` items |
-| `.projects-grid` | Project names, descriptions, tags, `href` on `.project-link` anchors |
-| `.timeline` | Roles, companies, dates, descriptions (most recent first) |
-| `#contact` / footer | Social link `href` attributes (LinkedIn, Twitter/X) |
+| `.skills-stack` | `.skill-group` / `.skill-tag` items |
+| `.projects-grid` | Project cards (name, description, tags); update the count in `routeLines.projects` |
+| `.timeline` | Roles, companies, dates (most recent first) |
+| `.tech-marquee` | Language and integration lists |
+| `#contact` / footer | Email, phone, social link `href`s |
+
+Remember to add both EN and TR strings in `js/translations.js` for any new `data-i18n` key.

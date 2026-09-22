@@ -78,8 +78,14 @@
   // Mobile nav toggle
   const toggle = document.getElementById('nav-toggle');
   const links  = document.getElementById('nav-links');
-  toggle.addEventListener('click', () => links.classList.toggle('open'));
-  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => links.classList.remove('open')));
+  function setMenu(open) {
+    links.classList.toggle('open', open);
+    toggle.classList.toggle('open', open);
+    toggle.setAttribute('aria-expanded', String(open));
+  }
+  toggle.setAttribute('aria-expanded', 'false');
+  toggle.addEventListener('click', () => setMenu(!links.classList.contains('open')));
+  links.querySelectorAll('a').forEach(a => a.addEventListener('click', () => setMenu(false)));
 
   const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
@@ -210,18 +216,21 @@
     const canvas = document.createElement('canvas');
     canvas.className = 'hero-network';
     canvas.setAttribute('aria-hidden', 'true');
-    hero.prepend(canvas);
+    const well = hero.querySelector('.hero-well');
+    if (!well) return;
+    well.appendChild(canvas);
     const ctx = canvas.getContext('2d');
 
     const labels = ['Java', 'Spring Boot', 'REST', 'SOAP', 'Go', 'Oracle', 'MQTT', 'Kotlin', 'React',
       'PostgreSQL', 'WebSocket', 'Python', 'RabbitMQ', 'TypeScript', 'Redis', 'OpenAPI', 'OAuth2',
       'Flink', 'Docker', 'e-Fatura', 'LLM', 'Angular', 'SQL'];
     const css = getComputedStyle(document.documentElement);
-    const ink = css.getPropertyValue('--ink').trim() || '#16130f';
-    const inkSoft = css.getPropertyValue('--ink-soft').trim() || '#57534b';
-    const accent = css.getPropertyValue('--accent').trim() || '#e5341b';
+    const surface = css.getPropertyValue('--bg').trim() || '#E0E5EC';
+    const fg = css.getPropertyValue('--fg').trim() || '#3D4852';
+    const muted = css.getPropertyValue('--muted').trim() || '#6B7280';
+    const accent = css.getPropertyValue('--accent').trim() || '#6C63FF';
 
-    let w = 0, h = 0, minX = 30, nodes = [], edges = [], packets = [], raf = 0, visible = true, lastSpawn = 0;
+    let w = 0, h = 0, nodes = [], edges = [], packets = [], raf = 0, visible = true, lastSpawn = 0;
 
     function layout() {
       const dpr = Math.min(window.devicePixelRatio || 1, 2);
@@ -229,12 +238,15 @@
       canvas.width = w * dpr; canvas.height = h * dpr;
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
 
-      const count = w < 500 ? 11 : w < 800 ? 16 : labels.length;
-      minX = window.innerWidth <= 768 ? 30 : w * 0.35;
-      nodes = labels.slice(0, count).map(label => ({
+      const count = w < 380 ? 11 : 14;
+      // jittered grid so labels spread across the well instead of clumping
+      const cols = Math.max(2, Math.round(Math.sqrt(count * (w / h) * 0.6)));
+      const rows = Math.ceil(count / cols);
+      const cellW = (w - 130) / cols, cellH = (h - 60) / rows;
+      nodes = labels.slice(0, count).map((label, i) => ({
         label,
-        x: minX + Math.random() * (w - minX - 110),
-        y: 30 + Math.random() * (h - 60),
+        x: 30 + (i % cols + 0.2 + Math.random() * 0.6) * cellW,
+        y: 30 + ((i / cols | 0) + 0.2 + Math.random() * 0.6) * cellH,
         vx: (Math.random() - .5) * .18,
         vy: (Math.random() - .5) * .18,
         pulse: 0,
@@ -255,36 +267,41 @@
     function draw() {
       ctx.clearRect(0, 0, w, h);
       ctx.lineWidth = 1;
-      ctx.strokeStyle = 'rgba(22, 19, 15, 0.14)';
+      ctx.strokeStyle = 'rgba(107, 114, 128, 0.22)';
       ctx.beginPath();
       edges.forEach(([a, b]) => { ctx.moveTo(nodes[a].x, nodes[a].y); ctx.lineTo(nodes[b].x, nodes[b].y); });
       ctx.stroke();
 
-      ctx.fillStyle = accent;
+      const dot = (x, y, r, color) => { ctx.fillStyle = color; ctx.beginPath(); ctx.arc(x, y, r, 0, Math.PI * 2); ctx.fill(); };
+
       packets.forEach(p => {
         const a = nodes[p.from], b = nodes[p.to];
-        ctx.fillRect(a.x + (b.x - a.x) * p.t - 2.5, a.y + (b.y - a.y) * p.t - 2.5, 5, 5);
+        dot(a.x + (b.x - a.x) * p.t, a.y + (b.y - a.y) * p.t, 3, accent);
       });
 
       ctx.font = '500 11px "Fira Code", monospace';
       ctx.textBaseline = 'middle';
       nodes.forEach(n => {
         if (n.pulse > 0) {
-          ctx.strokeStyle = `rgba(229, 52, 27, ${n.pulse})`;
-          const r = 4 + (1 - n.pulse) * 12;
-          ctx.strokeRect(n.x - r, n.y - r, r * 2, r * 2);
+          ctx.strokeStyle = `rgba(108, 99, 255, ${n.pulse * 0.6})`;
+          ctx.beginPath();
+          ctx.arc(n.x, n.y, 7 + (1 - n.pulse) * 12, 0, Math.PI * 2);
+          ctx.stroke();
         }
-        ctx.fillStyle = n.pulse > 0.3 ? accent : ink;
-        ctx.fillRect(n.x - 3, n.y - 3, 6, 6);
-        ctx.fillStyle = n.pulse > 0.3 ? accent : inkSoft;
-        ctx.fillText(n.label, n.x + 9, n.y);
+        // raised clay bump: dark shadow bottom-right, light top-left, surface on top
+        dot(n.x + 2, n.y + 2, 6, 'rgba(163, 177, 198, 0.75)');
+        dot(n.x - 2, n.y - 2, 6, 'rgba(255, 255, 255, 0.85)');
+        dot(n.x, n.y, 6, surface);
+        dot(n.x, n.y, 2.5, n.pulse > 0.3 ? accent : muted);
+        ctx.fillStyle = n.pulse > 0.3 ? accent : fg;
+        ctx.fillText(n.label, n.x + 12, n.y);
       });
     }
 
     function step(now) {
       nodes.forEach(n => {
         n.x += n.vx; n.y += n.vy;
-        if (n.x < minX || n.x > w - 110) n.vx *= -1;
+        if (n.x < 20 || n.x > w - 100) n.vx *= -1;
         if (n.y < 20 || n.y > h - 20) n.vy *= -1;
         n.pulse = Math.max(0, n.pulse - 0.02);
       });

@@ -7,7 +7,7 @@
   <meta name="description" content="Personal portfolio of Enes Karaoğlu, Senior Java Developer and Software Team Lead in Ankara." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@500;600;700;800&family=DM+Sans:wght@400;500;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/styles.css" />
 </head>
 <body>
@@ -35,6 +35,7 @@
 
 <!-- ── Hero ───────────────────────────────────────────────────── -->
 <section id="hero">
+  <div class="hero-copy">
   <p class="hero-tag" data-i18n="hero.tag">// senior java developer</p>
   <h1 class="hero-name" data-i18n-html="hero.name">
     Hi, I'm <span class="highlight">Enes Karaoğlu</span>
@@ -60,6 +61,14 @@
   <div class="hero-scroll">
     <span class="scroll-line"></span>
     <span data-i18n="hero.scroll">scroll to explore</span>
+  </div>
+  </div>
+  <div class="hero-visual" aria-hidden="true">
+    <span class="orb orb-1"></span>
+    <span class="orb orb-2"></span>
+    <div class="surface hero-card">
+      <div class="hero-well"></div>
+    </div>
   </div>
 </section>
 
@@ -99,12 +108,12 @@
       Education: <strong>Industrial Engineering</strong>, Sakarya University, 2006.
     </p>
     <br />
-    <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-outline" style="display:inline-flex;" data-i18n-html="about.email">
+    <a href="mailto:eneskaraoglu@gmail.com" class="btn btn-outline" data-i18n-html="about.email">
       &#128231; Email me
     </a>
   </div>
 
-  <p class="section-label reveal" style="margin-top:4rem;" data-i18n="about.techLabel">Technologies &amp; Tools</p>
+  <p class="section-label section-label--spaced reveal" data-i18n="about.techLabel">Technologies &amp; Tools</p>
   <div class="skills-stack reveal">
 
     <div class="skill-group">
@@ -277,7 +286,7 @@
   <div class="section-divider reveal"></div>
   <div class="projects-grid">
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128241;</div>
       </div>
@@ -296,7 +305,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#129513;</div>
       </div>
@@ -314,7 +323,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#129302;</div>
       </div>
@@ -332,7 +341,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128640;</div>
       </div>
@@ -352,7 +361,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#127915;</div>
       </div>
@@ -371,7 +380,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#9881;</div>
       </div>
@@ -389,7 +398,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128421;</div>
       </div>
@@ -407,7 +416,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128230;</div>
       </div>
@@ -425,7 +434,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128340;</div>
       </div>
@@ -443,7 +452,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#127981;</div>
       </div>
@@ -461,7 +470,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128202;</div>
       </div>
@@ -480,7 +489,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128203;</div>
       </div>
@@ -499,7 +508,7 @@
       </div>
     </div>
 
-    <div class="glass project-card reveal">
+    <div class="surface project-card reveal">
       <div class="project-top">
         <div class="project-icon">&#128051;</div>
       </div>
@@ -538,7 +547,7 @@
   <div class="timeline">
 
     <div class="timeline-item reveal">
-      <div class="glass timeline-card">
+      <div class="surface timeline-card">
         <p class="timeline-period" data-i18n="experience.current.period">04/2018 &mdash; Present</p>
         <h3 class="timeline-role" data-i18n="experience.current.role">Software Team Lead</h3>
         <p class="timeline-company">Bilişim AŞ, Ankara</p>
@@ -554,7 +563,7 @@
     </div>
 
     <div class="timeline-item reveal">
-      <div class="glass timeline-card">
+      <div class="surface timeline-card">
         <p class="timeline-period">04/2013 &mdash; 04/2018</p>
         <h3 class="timeline-role" data-i18n="experience.senior.role">Senior Software Developer</h3>
         <p class="timeline-company">Bilişim AŞ, Ankara</p>
@@ -567,7 +576,7 @@
     </div>
 
     <div class="timeline-item reveal">
-      <div class="glass timeline-card">
+      <div class="surface timeline-card">
         <p class="timeline-period">04/2008 &mdash; 04/2013</p>
         <h3 class="timeline-role" data-i18n="experience.developer.role">Software Developer</h3>
         <p class="timeline-company">Bilişim Ltd, Ankara</p>
@@ -589,7 +598,7 @@
   <p class="contact-subtitle reveal" data-i18n="contact.subtitle">
     I am open to Senior Java Developer and Java Software Team Lead conversations.
   </p>
-  <div class="glass contact-card reveal">
+  <div class="surface contact-card reveal">
     <a href="mailto:eneskaraoglu@gmail.com" class="contact-email">
       eneskaraoglu@gmail.com
     </a>
