@@ -14,7 +14,7 @@
 
 <!-- ── Navigation ─────────────────────────────────────────────── -->
 <nav>
-  <a href="#hero" class="nav-logo">&lt;<span>enes</span> /&gt;</a>
+  <a href="#hero" class="nav-logo">&lt;<span>enes</span><em class="nav-path" id="nav-path"></em> /&gt;</a>
   <ul class="nav-links" id="nav-links">
     <li><a href="#about" data-i18n="nav.about">About</a></li>
     <li><a href="#projects" data-i18n="nav.projects">Projects</a></li>
@@ -30,6 +30,7 @@
       <span></span><span></span><span></span>
     </button>
   </div>
+  <div class="nav-progress" id="nav-progress" aria-hidden="true"></div>
 </nav>
 
 <!-- ── Hero ───────────────────────────────────────────────────── -->
@@ -61,6 +62,15 @@
     <span data-i18n="hero.scroll">scroll to explore</span>
   </div>
 </section>
+
+<!-- ── Languages marquee ──────────────────────────────────────── -->
+<div class="tech-marquee" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-label">// languages</span>
+    <span>Java 21</span><span>Go</span><span>Kotlin</span><span>TypeScript</span><span>JavaScript</span>
+    <span>Python</span><span>SQL / PL-SQL</span><span>Groovy</span><span>Bash</span><span>Dart</span>
+  </div>
+</div>
 
 <!-- ── About ──────────────────────────────────────────────────── -->
 <section id="about">
@@ -510,6 +520,15 @@
 
   </div>
 </section>
+
+<!-- ── Integrations marquee ───────────────────────────────────── -->
+<div class="tech-marquee tech-marquee--reverse" aria-hidden="true">
+  <div class="marquee-track">
+    <span class="marquee-label">// integration</span>
+    <span>REST</span><span>SOAP</span><span>OpenAPI</span><span>MQTT</span><span>WebSocket / STOMP</span>
+    <span>RabbitMQ</span><span>Redis pub/sub</span><span>OAuth2 / OIDC</span><span>e-Fatura UBL</span><span>RAG / LLM</span>
+  </div>
+</div>
 
 <!-- ── Experience ─────────────────────────────────────────────── -->
 <section id="experience">
